@@ -1,10 +1,12 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { getAuth } from 'firebase/auth';
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
+import { SignIn } from './SignIn';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 const firebaseConfig = {
 	apiKey: process.env.REACT_APP_apiKey,
@@ -19,27 +21,24 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+const firestore = getFirestore(app);
+const auth = getAuth(app);
 
 
-function App() {
+const App = () => {
 	return (
 		<div className="App">
-			<header className="App-header">
-				<img src={logo} className="App-logo" alt="logo" />
-				<p>
-					Edit <code>src/App.tsx</code> and save to reload.
-				</p>
-				<a
-					className="App-link"
-					href="https://reactjs.org"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Learn React
-				</a>
-			</header>
+			<BrowserRouter>
+				<Routes>
+					<Route path="/" >
+						<Route index element={<SignIn auth={auth} />} />
+						<Route path="*" element={<SignIn auth={auth} />} />
+						<Route path="home" element={<p>HOME</p>} />
+					</Route>
+				</Routes>
+			</BrowserRouter >
 		</div>
 	);
-}
+};
 
 export default App;
