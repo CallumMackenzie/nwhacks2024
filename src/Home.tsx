@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Auth, User } from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { Firestore } from 'firebase/firestore';
-import { Button, Grid, Paper, TextField } from '@mui/material';
+import { Backdrop, Box, Button, Grid, Paper, Stack, TextField } from '@mui/material';
 import { SignInRequired, useRequiredSignIn } from './UseSignIn';
 
 export const Home = (props: {
 	auth: Auth,
 	firestore: Firestore
 }) => {
-	const navigate = useNavigate();
 	const user = useRequiredSignIn(props.auth);
 
 	return (<>
@@ -20,13 +19,25 @@ export const Home = (props: {
 };
 
 const HomeSignedIn = (props: {
+	auth: Auth,
 	user: User,
 	firestore: Firestore,
 }) => {
+	const navigate = useNavigate();
+
 	return (<>
 		<Grid container spacing={2} px={8} justifyContent={'center'} alignItems={'center'}>
 			<Grid item xs={12} textAlign='center'>
-				<h1><span style={{ color: "#1EB36C" }}>Vit</span><span style={{ color: "#C00F0F" }}>Alert</span></h1>
+				<Stack direction="row"
+					spacing={5}
+					py={2}
+					justifyContent='space-around'>
+					<p></p>
+					<h1><span style={{ color: "#1EB36C" }}>Vit</span><span style={{ color: "#C00F0F" }}>Alert</span></h1>
+					<Box display={'flex'} justifyContent={'center'} alignItems={'center'}>
+						<Button onClick={() => signOut(props.auth, navigate)}>Sign Out</Button>
+					</Box>
+				</Stack>
 			</Grid>
 			<Grid item xs={8}>
 				<TextField variant='filled'
@@ -71,4 +82,9 @@ const MissingNutrients = () => {
 			</Grid>
 		</Paper>
 	</>);
+};
+
+const signOut = (auth: Auth, navigate: NavigateFunction) => {
+	auth.signOut();
+	navigate("/");
 };
