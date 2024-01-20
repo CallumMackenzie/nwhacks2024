@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import "./index.css";
 import { User } from 'firebase/auth';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 import { SignIn } from './SignIn';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Home } from './Home';
 
 const firebaseConfig = {
 	apiKey: process.env.REACT_APP_apiKey,
@@ -31,7 +33,7 @@ const App = () => {
 					<Route path="/" >
 						<Route index element={<SignIn user={user} setUser={setUser}/>} />
 						<Route path="*" element={<SignIn user={user} setUser={setUser}/>} />
-						<Route path="home" element={<p>HOME</p>} />
+						<Route path="home" element={<Home firestore={firestore} user={user} setUser={setUser}/>} />
 					</Route>
 				</Routes>
 			</BrowserRouter >
