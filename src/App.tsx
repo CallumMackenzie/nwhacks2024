@@ -24,7 +24,6 @@ const analytics = getAnalytics(app);
 const firestore = getFirestore(app);
 const auth = getAuth(app);
 
-
 const App = () => {
 	return (
 		<div className="App">
