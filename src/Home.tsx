@@ -1,33 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { User } from "firebase/auth";
+import { Auth, User } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { Firestore } from 'firebase/firestore';
 import { Button, Grid, Paper, TextField } from '@mui/material';
+import { SignInRequired, useRequiredSignIn } from './UseSignIn';
 
 export const Home = (props: {
-	user: User | null,
-	setUser: (u: User | null) => void,
+	auth: Auth,
 	firestore: Firestore
 }) => {
 	const navigate = useNavigate();
-
-	const signOut = () => {
-		props.setUser(null);
-	};
-
-	useEffect(() => {
-		if (props.user == null)
-			navigate("/");
-	}, [props.user]);
+	const user = useRequiredSignIn(props.auth);
 
 	return (<>
-		{props.user !== null && <HomeSignedIn user={props.user!!} signOut={signOut} firestore={props.firestore} />}
+		<SignInRequired auth={props.auth} user={user}>
+			<HomeSignedIn {...props} user={user!!} />
+		</SignInRequired>
 	</>);
 };
 
 const HomeSignedIn = (props: {
 	user: User,
-	signOut: () => void,
 	firestore: Firestore,
 }) => {
 	return (<>
