@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './App.css';
 import { User } from 'firebase/auth';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
