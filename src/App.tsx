@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
-import { getAuth } from 'firebase/auth';
+import { User, getAuth } from 'firebase/auth';
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
@@ -22,16 +22,17 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const firestore = getFirestore(app);
-const auth = getAuth(app);
 
 const App = () => {
+	const [user, setUser] = useState<User | null>(null);
+
 	return (
 		<div className="App">
 			<BrowserRouter>
 				<Routes>
 					<Route path="/" >
-						<Route index element={<SignIn auth={auth} />} />
-						<Route path="*" element={<SignIn auth={auth} />} />
+						<Route index element={<SignIn user={user} setUser={setUser}/>} />
+						<Route path="*" element={<SignIn user={user} setUser={setUser}/>} />
 						<Route path="home" element={<p>HOME</p>} />
 					</Route>
 				</Routes>
