@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-import { User, getAuth } from 'firebase/auth';
-
+import { User } from 'firebase/auth';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";

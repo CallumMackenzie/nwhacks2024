@@ -16,6 +16,11 @@ export const SignIn = (props: {
 		checkSignedIn(setSigningIn, navigate, props.user, props.setUser);
 	}, []);
 
+	useEffect(() => {
+		if (props.user !== null)
+			navigate("/home");
+	}, [props.user]);
+
 	return (<>
 		<Box justifyContent='center' textAlign='center' alignContent='center'>
 			<Button variant='contained'
