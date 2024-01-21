@@ -12,6 +12,9 @@ We believe in not just monitoring but guiding users toward a healthier lifestyle
 * Actionable insights for informed nutrition choices
 * User-friendly interface for seamless experience
 
+## Visit Our Website
+Explore Vitalert at https://nw-hackers.web.app/ or https://vitalert.tech/
+
 ## Getting Started
 1. Clone the repository: `git clone https://github.com/CallumMackenzie/nwhacks2024`
 2. Navigate to the project directory: `cd nwhacks2024`
