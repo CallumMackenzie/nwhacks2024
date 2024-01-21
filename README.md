@@ -1,5 +1,3 @@
-# VitAlert
-
 <div align="center">
   <img src="./src/images/VitAlert-Full.png" alt="VitAlert Logo" width="640" height="512">
 </div>
