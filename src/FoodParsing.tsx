@@ -43,7 +43,7 @@ export enum Nutrient {
 	Riboflavin = "RIBF",
 	Niacin = "NIA",
 	VitaminB6 = "VITB6A",
-	FolateTotal = "FOLFE",
+	FolateTotal = "FOLDFE",
 	FolateFood = "FOLFD",
 	FolicAcid = "FOLAC",
 	VitaminB12 = "VITB12",
