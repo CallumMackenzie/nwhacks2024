@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 
 import symptomsJson from "./data/symptoms2.json";
-import foodJson from "./data/foodImage.json"
+import foodJson from "./data/foodImage.json";
 
 // https://vitalert.com?nutrient="Vitamin A"
 // http://localhost:3000/nutrient?nutrient=%22Vitamin%20A%22
@@ -28,83 +28,12 @@ import foodJson from "./data/foodImage.json"
 // Get the data for the other fields (function, symptoms)
 // Put them in UI nicely
 
-// const foodList = {
-//     milk: "https://source.unsplash.com/person-pours-milk-into-glass-_8bnn1GqX70",
-//     egg: "https://source.unsplash.com/person-holding-brown-egg-on-green-ceramic-bowl-onxjrr3Erwc",
-//     cereal: "https://source.unsplash.com/brown-ceramic-bowl-with-brown-and-white-beans-UD_hXnHe5ZI",
-//     orange: "https://source.unsplash.com/orange-fruits-on-white-ceramic-plate-A4BBdJQu2co",
-//     salad: "https://source.unsplash.com/close-up-photo-of-vegetable-salad--ftWfohtjNw",
-//     carrot: "https://source.unsplash.com/orange-carrots-on-green-grass-GHRT9j21m2M",
-//     brocolli: "https://source.unsplash.com/green-broccoli-on-white-ceramic-plate-jSQxj-Ug0H8",
-//     cabbage: "https://source.unsplash.com/green-lettuce-on-red-plastic-container-ipCEymapISc",
-//     hazelnuts: "https://source.unsplash.com/a-large-pile-of-nuts-sitting-next-to-each-other-gXLFAWv4TCc",
-//     oysters: "https://source.unsplash.com/sliced-fruit-on-black-ceramic-plate-3PNVc3O7Gb4",
-//     sardines: "https://source.unsplash.com/fresh-frozen-anchovy-on-shelves-of-huge-industrial-refrigerator-sib5507yIBA",
-//     dairy: "https://source.unsplash.com/two-black-and-white-dairy-cows-looking-on-white-bottles-ru4jyDiLHsI"
-// };
-/*const itemData = [
-  {
-    img: 'https://source.unsplash.com/person-pours-milk-into-glass-_8bnn1GqX70', // start of Vitamin A
-    title: 'Milk',
-  },
-  {
-    img: 'https://source.unsplash.com/person-holding-brown-egg-on-green-ceramic-bowl-onxjrr3Erwc',
-    title: 'Egg',
-  },
-  {
-    img: 'https://source.unsplash.com/brown-ceramic-bowl-with-brown-and-white-beans-UD_hXnHe5ZI',
-    title: 'Cereal',
-  },
-  {
-      img: 'https://source.unsplash.com/orange-fruits-on-white-ceramic-plate-A4BBdJQu2co',
-      title: 'Orange'
-  },
-  {
-      img: 'https://source.unsplash.com/close-up-photo-of-vegetable-salad--ftWfohtjNw',
-      title: 'Salad'
-  },
-  {
-      img: 'https://source.unsplash.com/orange-carrots-on-green-grass-GHRT9j21m2M', // end of Vitamin A
-      title: 'Carrot'
-  },
-  {
-    // ommitted ALPHA LIPOIC ACID
-    // ommitted ASPARAGINE
-    // ommitted BIOTIN
-
-    img: 'https://source.unsplash.com/green-broccoli-on-white-ceramic-plate-jSQxj-Ug0H8', // start of CA (Calcium)
-    title: 'Brocolli'
-},
-{
-    img: 'https://source.unsplash.com/green-lettuce-on-red-plastic-container-ipCEymapISc', 
-    title: 'Cabbage'
-}, 
-{
-    img: 'https://source.unsplash.com/a-large-pile-of-nuts-sitting-next-to-each-other-gXLFAWv4TCc',
-    title: 'Hazelnuts'
-},
-{
-    img: 'https://source.unsplash.com/sliced-fruit-on-black-ceramic-plate-3PNVc3O7Gb4',
-    title: 'Oysters'  
-  },
-  {
-    img: 'https://source.unsplash.com/fresh-frozen-anchovy-on-shelves-of-huge-industrial-refrigerator-sib5507yIBA',
-    title: 'Sardines'  
-  },
-  {
-    img: 'https://source.unsplash.com/two-black-and-white-dairy-cows-looking-on-white-bottles-ru4jyDiLHsI',
-    title: 'Dairy'  
-  },
-]*/
-
-
-
 export const NutrientView = (props: {
 }) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const queryParams = new URLSearchParams(location.search);
-	// const nutrient = queryParams.get('nutrient');
+	const nutrient = queryParams.get('nutrient');
 
 	// console.log(nutrient);
 
@@ -113,7 +42,7 @@ export const NutrientView = (props: {
 
 
 
-	const nutrient = "VITAMIN A";
+	// const nutrient = "ALPHA LIPOIC ACID";
 	let index = -1;
 	for (let i = 0; i < symptomsJson.Name.length; i++) {
 		if (symptomsJson.Name[i] === nutrient) {
@@ -135,13 +64,12 @@ export const NutrientView = (props: {
 	let itemData: any = [];
 	let sourceList = source.split(",");
 	sourceList = sourceList.map((data) => (data.trim().toLowerCase()));
+	console.log(sourceList);
 	sourceList.forEach((item) => {
 		if (Object.hasOwn(foodJson,item)){
 			itemData.push(foodJson[item as keyof typeof foodJson]);
 		}
 	})
-	console.log(sourceList);
-	console.log(itemData);
 	let colorString: string;
 	
 	if (rarity === "MOST COMMON") {
@@ -160,7 +88,7 @@ export const NutrientView = (props: {
   	return (
     <>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', paddingTop: '50px' }}>
-        <Card variant="outlined" style={{ margin: 'auto', maxWidth: 400 }}>
+        <Card variant="outlined" style={{ margin: 'auto', maxWidth: 600 }}>
           	<CardContent>
             	<Typography variant="h2" component="div" align="center" gutterBottom style={{ fontSize: '3.0rem' }}>
               		{nutrient}
@@ -176,18 +104,17 @@ export const NutrientView = (props: {
             	</Typography>
           	</CardContent>
 
-		  	{/* <ImageList sx={{ width: 600, height: 300 }} cols={3} rowHeight={164}>
-				{
-					sourceList.forEach((item: string) => {
-						if (Object.hasOwn(foodJson,item)){
-							
-						}
-
-					}
-				)}
-				
-				
-			</ImageList> */}
+		  	 <ImageList sx={{ width: 600, height: 300 }} cols={3} rowHeight={164}>
+			   	{itemData.map((item: any) => (
+					<ImageListItem key={item}>
+						<img
+							srcSet={`${item}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+							src={`${item}?w=164&h=164&fit=crop&auto=format`}
+							loading="lazy"
+						/>
+					</ImageListItem>
+				))}
+			</ImageList>
         </Card>
       </div>
     </>
