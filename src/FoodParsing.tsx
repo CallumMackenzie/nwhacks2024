@@ -1,7 +1,14 @@
 import React, { useEffect } from "react";
 
 export type NutrientProfile = Map<Nutrient, UnitValue>;
-export type FoodNutrientMap = Map<string, NutrientProfile>;
+export type FoodNutrientMap = Map<string, FoodInfo>;
+
+export interface FoodInfo {
+	name: string,
+	quantity: number,
+	measure: string,
+	nutrients: NutrientProfile,
+}
 
 export interface UnitValue {
 	unit: string,
@@ -49,9 +56,9 @@ const edamamConfig = {
 	api_key: process.env.REACT_APP_nutritionAnalysisKey
 };
 
-export const getNutrientValues = async (input: string): Promise<Map<string, NutrientProfile>> => {
+export const getNutrientValues = async (input: string): Promise<FoodNutrientMap> => {
 	const nutrients = input.split(/\s*,\s*/gm).filter(v => v.length != 0);
-	const responses: Map<string, NutrientProfile> = new Map();
+	const responses: FoodNutrientMap = new Map();
 	// This could be faster but I want to save time
 	for (let i = 0; i < nutrients.length; ++i) {
 		const n = nutrients[i];
@@ -70,8 +77,13 @@ export const getNutrientValues = async (input: string): Promise<Map<string, Nutr
 		const foodName = parsedJson["foodMatch"];
 		const foodQuantity = parsedJson["quantity"];
 		const foodMeasure = parsedJson["measure"];
-		console.log(parsedJson);
-		responses.set(foodQuantity + " " + foodMeasure + " " + foodName, foodNutrients);
+		const foodInfo: FoodInfo = {
+			name: foodName,
+			quantity: foodQuantity,
+			measure: foodMeasure,
+			nutrients: foodNutrients
+		};
+		responses.set(foodName + " (" + foodMeasure + ")", foodInfo);
 	}
 	return responses;
 }
@@ -105,7 +117,12 @@ export const combineFoodNutrientMaps = (a: FoodNutrientMap, b: FoodNutrientMap):
 	b.forEach((value, key) => {
 		const prevVal = ret.get(key);
 		if (prevVal !== undefined)
-			ret.set(key, sumNutrients([prevVal, value]));
+			ret.set(key, {
+				nutrients: sumNutrients([prevVal.nutrients, value.nutrients]),
+				name: prevVal.name,
+				measure: prevVal.measure,
+				quantity: prevVal.quantity + value.quantity
+			});
 		else
 			ret.set(key, value);
 	});

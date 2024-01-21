@@ -10,6 +10,7 @@ import {
 	Grid,
 	List,
 	ListItem,
+	ListItemText,
 	Paper,
 	Stack,
 	TextField,
@@ -138,9 +139,7 @@ const YourFoods = (props: {
 								.map(set => {
 									const key = set[0], value = set[1];
 									return (<>
-										<ListItem key={key}>
-											<p>{key}</p>
-										</ListItem>
+										<ListItemText key={key} primary={key + " " + value.quantity + " " + value.measure} />
 									</>);
 								}) : (<></>)}
 						</List>
@@ -184,7 +183,7 @@ const parseFoodInput = async (firestore: Firestore,
 	let foodValues = await getNutrientValues(input);
 	if (foods !== null)
 		foodValues = combineFoodNutrientMaps(foods.foods, foodValues);
-	const totals = sumNutrients(Array.from(foodValues.values()));
+	const totals = sumNutrients(Array.from(foodValues.values()).map(v => v.nutrients));
 	setFoods({
 		total: totals,
 		foods: foodValues
