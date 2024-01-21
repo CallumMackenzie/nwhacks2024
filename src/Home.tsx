@@ -77,7 +77,7 @@ const HomeSignedIn = (props: {
 		<>
 			<Grid
 				container
-				spacing={2}
+				spacing={1}
 				px={4}
 				justifyContent={"center"}
 				alignItems={'flex-start'}
@@ -85,7 +85,8 @@ const HomeSignedIn = (props: {
 				<Grid item xs={12} textAlign="center">
 					<Stack
 						direction="row"
-						spacing={5}
+						spacing={4}
+						alignItems={'center'}
 						justifyContent="space-around">
 						{aboveMd &&
 							<Box
@@ -110,8 +111,7 @@ const HomeSignedIn = (props: {
 						<Box
 							display={"flex"}
 							justifyContent={"center"}
-							alignItems={"center"}
-						>
+							alignItems={"center"}>
 							<Button onClick={() => signOut(props.auth, navigate)}>
 								Sign Out
 							</Button>
