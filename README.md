@@ -3,6 +3,9 @@
 <img src="./src/images/VitAlert-Full.png" alt="VitAlert Logo" width="200" height="200">
 
 ## About Our Project
+
+**94% Of Canadians are deficient in one or more nutrients.** [(1)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8408873/)
+
 "VitAlert" is a web application designed to help individuals maintain a balanced diet by tracking their daily food intake. Developed during the 24-hour NWHacks 2024 hackathon.
 Our inspiration stems from the growing prevalence of nutrient deficiencies, impacting overall health and well-being. 
 In a world where busy schedules often lead to suboptimal dietary choices, "Vitalert" is a solution that empowers users to make informed decisions about their nutrition.
