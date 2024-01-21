@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Auth, User } from "firebase/auth";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { Firestore } from "firebase/firestore";
@@ -45,6 +45,7 @@ const HomeSignedIn = (props: {
 	firestore: Firestore;
 }) => {
 	const navigate = useNavigate();
+	const foodSearchTextArea = useRef<HTMLDivElement>(null);
 	const [foodInput, setFoodInput] = useState("");
 	const [foods, setFoods] = useState<null | FoodResponseType>(null);
 
@@ -92,9 +93,14 @@ const HomeSignedIn = (props: {
 							</Avatar>
 						</Stack>
 						<TextField
+							onKeyDown={e => {
+								if (e.keyCode === 13)
+									parseFoodInput(props.firestore, props.user, foodInput, setFoodInput, foods, setFoods)
+							}}
 							variant="standard"
+							value={foodInput}
+							placeholder="1 apple, 1 slice pizza, 1 cup rice"
 							onChange={(e) => setFoodInput(e.currentTarget.value)}
-							helperText="Ex. 1 apple, 1 slice pizza, 1 cup rice"
 							label="Type food and amount"
 							sx={{
 								width: "75%",
@@ -104,7 +110,7 @@ const HomeSignedIn = (props: {
 							disabled={foodInput == ""}
 							variant="contained"
 							onClick={() =>
-								parseFoodInput(props.firestore, props.user, foodInput, foods, setFoods)
+								parseFoodInput(props.firestore, props.user, foodInput, setFoodInput, foods, setFoods)
 							}>
 							Submit
 						</Button>
@@ -130,11 +136,6 @@ const YourFoods = (props: {
 		measure: string,
 		quantity: number
 	}
-	const gridColDef: GridColDef[] = [
-		{ field: 'id', headerName: "Name", width: 300 },
-		{ field: 'measure', headerName: "Unit", width: 100 },
-		{ field: 'quantity', headerName: "Quantity", width: 100 }
-	];
 
 	const [rows, setRows] = useState<Array<Row>>([]);
 
@@ -164,9 +165,15 @@ const YourFoods = (props: {
 						<Divider />
 					</Grid>
 					<Grid item xs={12}>
-						<DataGrid rows={rows} columns={gridColDef} sx={{
-							height: '40vh'
-						}} />
+						<List>
+							{rows.map(row => {
+								return (<>
+									<ListItem>
+
+									</ListItem>
+								</>);
+							})}
+						</List>
 					</Grid>
 				</Grid>
 			</Paper >
@@ -206,9 +213,6 @@ const MissingNutrients = (props: {
 		setRows(belowVal);
 	}, [props.foods]);
 
-
-
-
 	return (<>
 		<Paper>
 			<Grid container p={3}>
@@ -241,8 +245,10 @@ const signOut = (auth: Auth, navigate: NavigateFunction) => {
 const parseFoodInput = async (firestore: Firestore,
 	user: User,
 	input: string,
+	setInput: (s: string) => void,
 	foods: FoodResponseType | null,
 	setFoods: (f: FoodResponseType | null) => void) => {
+	setInput("");
 	let foodValues = await getNutrientValues(input);
 	if (foods !== null)
 		foodValues = combineFoodNutrientMaps(foods.foods, foodValues);
