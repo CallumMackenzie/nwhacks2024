@@ -8,9 +8,9 @@ Unlike generic nutrition apps, "Vitalert" goes beyond tracking; it actively iden
 We believe in not just monitoring but guiding users toward a healthier lifestyle.
 
 ## Features
-Personalized nutrient tracking
-Actionable insights for informed nutrition choices
-User-friendly interface for seamless experience
+* Personalized nutrient tracking
+* Actionable insights for informed nutrition choices
+* User-friendly interface for seamless experience
 
 ## Getting Started
 1. Clone the repository: `git clone https://github.com/your-username/Vitalert.git`
