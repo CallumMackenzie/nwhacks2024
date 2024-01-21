@@ -15,13 +15,16 @@ import {
 	CardContent,
 	Typography,
 	ImageList,
-	ImageListItem
+	ImageListItem,
+	useMediaQuery,
+	bottomNavigationActionClasses
 } from "@mui/material";
 
 import symptomsJson from "./data/symptoms2.json";
 
 import foodJson from "./data/foodImage.json";
 import { getSymptomData } from "./FoodParsing";
+import { theme } from "./App";
 
 // https://vitalert.com?nutrient="Vitamin A"
 // http://localhost:3000/nutrient?nutrient=%22Vitamin%20A%22
@@ -36,6 +39,12 @@ export const NutrientView = (props: {
 	const location = useLocation();
 	const queryParams = new URLSearchParams(location.search);
 	const nutrient = queryParams.get('nutrient');
+
+	const aboveXl = useMediaQuery(theme.breakpoints.up('xl')),
+		aboveLg = useMediaQuery(theme.breakpoints.up('lg')),
+		aboveMd = useMediaQuery(theme.breakpoints.up('md')),
+		aboveSm = useMediaQuery(theme.breakpoints.up('sm')),
+		aboveXs = useMediaQuery(theme.breakpoints.up('xs'));
 
 	// console.log(nutrient);
 
@@ -58,7 +67,6 @@ export const NutrientView = (props: {
 	let itemData: any = [];
 	let sourceList = sources.split(",");
 	sourceList = sourceList.map((data) => (data.trim().toLowerCase()));
-	console.log(sourceList);
 	sourceList.forEach((item) => {
 		if (Object.hasOwn(foodJson, item)) {
 			itemData.push(foodJson[item as keyof typeof foodJson]);
@@ -79,26 +87,35 @@ export const NutrientView = (props: {
 		colorString = "red";
 	}
 
+
 	return (
 		<>
-			<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', paddingTop: '50px' }}>
-				<Card variant="outlined" style={{ margin: 'auto', maxWidth: 600 }}>
-					<CardContent>
-						<Typography variant="h2" component="div" align="center" gutterBottom style={{ fontSize: '3.0rem' }}>
-							{nutrient}
-						</Typography>
-						<Typography color={colorString} align="center" gutterBottom style={{ fontSize: '2.0rem' }}>
-							<strong>Rarity:</strong> {rarity}
-						</Typography>
-						<Typography color="textSecondary" align="center" gutterBottom style={{ fontSize: '2.0rem' }}>
-							<strong>Symptoms:</strong> {symptoms}
-						</Typography>
-						<Typography color="textSecondary" align="center" style={{ fontSize: '2.0rem' }}>
-							<strong>Nutrient Resource:</strong> {sources}
-						</Typography>
-					</CardContent>
+			<Box
+				display={"flex"}
+				justifyContent={"center"}
+				alignItems={"center"}>
+				<Stack direction="column" alignItems='center' justifyContent='center' p={3}>
+					<Box textAlign={'center'}>
+						<h1>{nutrient}</h1>
+						<Divider />
+						<h2 style={{ color: colorString }}>Rarity: {rarity}</h2>
+						<Divider />
+						<h2>Symptoms</h2>
+						<p>{symptoms}</p>
+						<Divider />
+						<h2>Foods with {nutrient}</h2>
+						<p>{sources}</p>
+						<Divider />
+						<h2>Functions of {nutrient} in the Body</h2>
+						<p>{func}</p>
+						<Divider />
+					</Box>
 
-					<ImageList sx={{ width: 600, height: 300 }} cols={3} rowHeight={164}>
+					<ImageList variant="masonry"
+						sx={{
+							width: aboveXl ? 1000 : aboveLg ? 850 : aboveMd ? 650 : aboveSm ? 450 : 275,
+						}}
+						cols={2} rowHeight={164}>
 						{itemData.map((item: any) => (
 							<ImageListItem key={item}>
 								<img
@@ -109,8 +126,13 @@ export const NutrientView = (props: {
 							</ImageListItem>
 						))}
 					</ImageList>
-				</Card>
-			</div>
+					<Button
+						onClick={() => navigate("/home")}
+						variant='contained'>
+						Home
+					</Button>
+				</Stack>
+			</Box >
 		</>
 	);
 };
