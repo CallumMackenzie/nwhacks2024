@@ -1,6 +1,8 @@
 # VitAlert
 
-<img src="./src/images/VitAlert-Full.png" alt="VitAlert Logo" width="500" height="250">
+<div align="center">
+  <img src="./src/images/VitAlert-Full.png" alt="VitAlert Logo" width="200" height="200">
+</div>
 
 ## About Our Project
 "VitAlert" is a web application designed to help individuals maintain a balanced diet by tracking their daily food intake. Developed during the 24-hour NWHacks 2024 hackathon.
