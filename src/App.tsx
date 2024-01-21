@@ -8,6 +8,7 @@ import { SignIn } from './SignIn';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Home } from './Home';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { NutrientView } from './NutrientView';
 
 const firebaseConfig = {
 	apiKey: process.env.REACT_APP_apiKey,
@@ -64,6 +65,7 @@ const App = () => {
 							<Route index element={<SignIn auth={auth} />} />
 							<Route path="*" element={<SignIn auth={auth} />} />
 							<Route path="home" element={<Home auth={auth} firestore={firestore} />} />
+							<Route path="nutrient" element={<NutrientView />} />
 						</Route>
 					</Routes>
 				</BrowserRouter >
