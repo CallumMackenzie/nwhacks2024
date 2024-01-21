@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
 	Backdrop,
 	Box,
@@ -87,17 +87,24 @@ const itemData = [
 
 export const NutrientView = (props: {
 }) => {
+	const navigate = useNavigate();
 	// nutrient is the value of the nutrient query parameter
-	// const { nutrient } = useParams();
-	const nutrient = "VITAMIN A";
-	let index = 0;
-	for(let i=0; i<symptomsJson.Name.length; i++){
-		if (symptomsJson.Name[i] === nutrient){
+	const { nutrient } = useParams();
+	// const nutrient = "VITAMIN A";
+	let index = -1;
+	for (let i = 0; i < symptomsJson.Name.length; i++) {
+		if (symptomsJson.Name[i] === nutrient) {
 			index = i;
 			break;
 		}
 	}
-	console.log(index);
+	if (index == -1)
+		return (<>
+			<Stack spacing='2' direction={'column'} alignItems={'center'}>
+				<h2>Not found: {nutrient}!</h2>
+				<Button onClick={() => navigate("/home")}>Home</Button>
+			</Stack>
+		</>);
 	const rarity = symptomsJson.Rarity[index];
 	const func = symptomsJson.Function[index];
 	const symp = symptomsJson.Symptoms[index];

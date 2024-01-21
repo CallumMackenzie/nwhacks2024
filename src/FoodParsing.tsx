@@ -14,7 +14,7 @@ export interface UnitValue {
 	unit: string,
 	label: string,
 	quantity: number,
-	percentDaily: number,
+	percentDaily: number | undefined,
 };
 
 export enum Nutrient {
@@ -52,6 +52,46 @@ export enum Nutrient {
 	Water = "WATER",
 }
 
+const nutrientNameList: Map<string, string[]> = new Map([
+	["Calories", ["Calories"]],
+	["Fat", ["Fat"]],
+	["SaturatedFat", ["Saturated Fat"]],
+	["MonosaturatedFat", ["Monosaturated Fat"]],
+	["PolyunsaturatedFat", ["Polyunsaturated Fat"]],
+	["Carbohydrate", ["Carbohydrate"]],
+	["NetCarbohydrate", ["Net Carbohydrate"]],
+	["Fiber", ["Fiber"]],
+	["Sugar", ["Sugar"]],
+	["Protein", ["Protein"]],
+	["Cholesterol", ["Cholesterol"]],
+	["Sodium", ["Sodium"]],
+	["Calcium", ["Calcium"]],
+	["Magnesium", ["Magnesium"]],
+	["Potassium", ["Potassium"]],
+	["Iron", ["Iron"]],
+	["Zinc", ["Zinc"]],
+	["Phosphorus", ["Phosphorus"]],
+	["VitaminA", ["Vitamin A"]],
+	["VitaminC", ["Vitamin C"]],
+	["Thiamin", ["Thiamin"]],
+	["Riboflavin", ["Riboflavin"]],
+	["Niacin", ["Niacin"]],
+	["VitaminB6", ["Vitamin B6"]],
+	["FolateTotal", ["Folate (Total)"]],
+	["FolateFood", ["Folate (Food)"]],
+	["FolicAcid", ["Folic Acid"]],
+	["VitaminB12", ["Vitamin B12"]],
+	["VitaminD", ["Vitamin D"]],
+	["VitaminE", ["Vitamin E"]],
+	["VitaminK", ["Vitamin K"]],
+	["Water", ["Water"]],
+]);
+
+export const getNutrientCommonName = (n: Nutrient): string => {
+	const names = nutrientNameList.get(n);
+	return names === undefined ? "" : names[0];
+};
+
 const edamamConfig = {
 	api_id: process.env.REACT_APP_nutritionAnalysisId,
 	api_key: process.env.REACT_APP_nutritionAnalysisKey
@@ -73,7 +113,16 @@ export const getNutrientValues = async (input: string): Promise<FoodNutrientMap>
 				const nutrientUnitValue = json["totalNutrients"][v[1]] as UnitValue | undefined;
 				if (nutrientUnitValue !== undefined) {
 					const totalDaily = json["totalDaily"][v[1]];
-					nutrientUnitValue.percentDaily = totalDaily === undefined ? 0 : totalDaily["quantity"];
+					const quantity = nutrientUnitValue.quantity;
+					if (totalDaily === undefined) {
+						nutrientUnitValue.percentDaily = {
+							[Nutrient.MonosaturatedFat]: quantity / 36,
+							[Nutrient.PolyunsaturatedFat]: quantity / 15,
+							[Nutrient.Cholesterol]: quantity / 150,
+						}[v[1] as string];
+					}
+					else
+						nutrientUnitValue.percentDaily = totalDaily["quantity"];
 				}
 				if (nutrientUnitValue !== undefined)
 					foodNutrients.set(v[0] as Nutrient, nutrientUnitValue);
@@ -109,7 +158,8 @@ export const sumNutrients = (input: Array<NutrientProfile>): NutrientProfile => 
 				unit: prevValue.unit,
 				quantity: prevValue.quantity + value.quantity,
 				label: prevValue.label,
-				percentDaily: prevValue.percentDaily + value.percentDaily
+				percentDaily: prevValue.percentDaily === undefined && value.percentDaily === undefined ?
+					undefined : (prevValue.percentDaily ?? 0 + (value.percentDaily ?? 0))
 			});
 		});
 	});
@@ -136,11 +186,11 @@ export const combineFoodNutrientMaps = (a: FoodNutrientMap, b: FoodNutrientMap):
 	return ret;
 }
 
-export const getBelowDailyValue = (total: NutrientProfile): Array<string> => {
-	const low: Array<string> = [];
+export const sortByDailyValue = (total: NutrientProfile): Array<[Nutrient, UnitValue]> => {
+	let low: Array<[Nutrient, UnitValue]> = [];
 	total.forEach((value, key) => {
-		if (value.percentDaily < 1)
-			low.push(key);
+		low.push([key, value]);
 	});
-	return low;
+	const ret = low.sort((a, b) => (a[1].percentDaily ?? 1.1) - (b[1].percentDaily ?? 1.1));
+	return ret;
 };
