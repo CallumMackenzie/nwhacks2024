@@ -22,7 +22,7 @@ import {
 import { SignInRequired, useRequiredSignIn } from "./UseSignIn";
 import LunchDiningIcon from "@mui/icons-material/LunchDining";
 import Avatar from "@mui/material/Avatar";
-import { FoodNutrientMap, Nutrient, NutrientProfile, combineFoodNutrientMaps, getNutrientCommonName, getNutrientValues, removeNutrient, sortByDailyValue, sumNutrients } from "./FoodParsing";
+import { FoodNutrientMap, Nutrient, NutrientProfile, combineFoodNutrientMaps, getNutrientCommonName, getNutrientValues, getSymptomData, removeNutrient, sortByDailyValue, sumNutrients } from "./FoodParsing";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { AdsClick, Delete, DeleteTwoTone } from "@mui/icons-material";
 import { fetchOrCreate, save } from "./FirebaseUtils";
@@ -272,6 +272,7 @@ const MissingNutrients = (props: {
 									secondaryAction={
 										<Tooltip title={"Information on " + row.id}>
 											<ListItemButton key={row.id}
+												disabled={getSymptomData(row.id) === undefined}
 												onClick={() => {
 													navigate(`/nutrient?nutrient=${row.id}`);
 												}}>
@@ -279,27 +280,21 @@ const MissingNutrients = (props: {
 											</ListItemButton>
 										</Tooltip>
 									}>
-									<ListItemText key={row.id} secondary={
-										<React.Fragment>
-											<Typography
-												sx={{ display: 'inline' }}
-												component="span"
-												variant="body2"
-												color="text.primary"
-											>
-												
-											</Typography>
-										</React.Fragment>
-									}>
-										{row.id} {row.value} {row.unit} -- {row.percentDaily}% Daily
+									<ListItemText key={row.id}
+										secondary={
+											<React.Fragment>
+												{getSymptomData(row.id)?.symptoms}
+											</React.Fragment>
+										}>
+										{row.id} {row.value} {row.unit}, daily intake: {row.percentDaily}%
 									</ListItemText>
-								</ListItem>
+								</ListItem >
 							</>);
 						})}
 					</List>
 				</Grid>
 			</Grid>
-		</Paper>
+		</Paper >
 	</>);
 };
 
