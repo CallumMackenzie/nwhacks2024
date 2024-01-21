@@ -76,7 +76,7 @@ const edamamConfig = {
     api_key: process.env.REACT_APP_nutritionAnalysisKey
 };
 
-export async function getNutrient(ingredient: string){
+export async function getNutrientEach(ingredient: string){
     const response = await fetch(`https://api.edamam.com/api/nutrition-data?app_id=${edamamConfig.api_id}&app_key=${edamamConfig.api_key}&nutrition-type=cooking&ingr=${ingredient}`,{
         method : "GET"
     });
@@ -117,7 +117,6 @@ export async function getNutrient(ingredient: string){
             ZN: {value: 0, unit: "mg"},
         }
     }
-    console.log(nutrient);
     myObj.nutrient.CA.value += nutrient.totalNutrients.CA.quantity;
     list.total.CA.value += myObj.nutrient.CA.value;
     myObj.nutrient.CHOCDF.value += nutrient.totalNutrients.CHOCDF.quantity;
@@ -181,11 +180,17 @@ export async function getNutrient(ingredient: string){
     myObj.nutrient.ZN.value += nutrient.totalNutrients.ZN.quantity;
     list.total.ZN.value += myObj.nutrient.ZN.value;
     list.food[count++] = myObj;
-    console.log(list);
     return nutrient;
 }
 
-export function seperateFood(input: string){
+export function getNutrient(input: string){
+    const arr = seperateFood(input);
+    for (let i=0; i<arr.length; i++){
+        getNutrientEach(arr[i]);
+    }
+    console.log(list);
+}
+function seperateFood(input: string){
     return input.split(",");
 }
 
