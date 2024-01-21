@@ -86,7 +86,17 @@ const HomeSignedIn = (props: {
 						py={2}
 						justifyContent="space-around"
 					>
-						<p>{/* Needed for space around */}</p>
+						<Box
+							display={"flex"}
+							justifyContent={"center"}
+							alignItems={"center"}
+						>
+							<Typography sx={{
+								fontSize: '0.6em'
+							}}>
+								Welcome, {props.user.displayName}!
+							</Typography>
+						</Box>
 						<h1>
 							<span style={{ color: "#1EB36C" }}>Vit</span>
 							<span style={{ color: "#C00F0F" }}>Alert</span>
@@ -118,11 +128,11 @@ const HomeSignedIn = (props: {
 								if (e.keyCode === 13)
 									parseFoodInput(props.firestore, props.user, foodInput, setFoodInput, foods, setFoods)
 							}}
-							variant="standard"
+							variant="filled"
 							value={foodInput}
 							placeholder="1 apple, 1 slice pizza, 1 cup rice"
 							onChange={(e) => setFoodInput(e.currentTarget.value)}
-							label="Type food and amount"
+							label={<span style={{ color: 'white' }}>Type <span style={{ color: "#1EB36C" }}>food</span> and <span style={{ color: "#C00F0F" }}>amount . . .</span></span>}
 							sx={{
 								width: "75%",
 							}}
@@ -188,7 +198,7 @@ const YourFoods = (props: {
 					<Grid item xs={12}>
 						<List sx={{
 							overflowY: 'scroll',
-							height: '45vh'
+							height: '41vh'
 						}}>
 							{rows.map(row => {
 								return (<>
@@ -263,7 +273,7 @@ const MissingNutrients = (props: {
 					item xs={12}>
 					<List sx={{
 						overflowY: 'scroll',
-						height: '45vh'
+						height: '41vh'
 					}}>
 						{rows.map(row => {
 							return (<>

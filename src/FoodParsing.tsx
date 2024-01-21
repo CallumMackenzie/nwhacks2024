@@ -156,9 +156,14 @@ export const getNutrientValues = async (input: string): Promise<FoodNutrientMap>
 					}
 					else
 						nutrientUnitValue.percentDaily = totalDaily["quantity"];
-				}
-				if (nutrientUnitValue !== undefined)
 					foodNutrients.set(v[0] as Nutrient, nutrientUnitValue);
+				} else
+					foodNutrients.set(v[0] as Nutrient, {
+						percentDaily: 0,
+						quantity: 0,
+						unit: "g",
+						label: v[0] as string,
+					});
 			});
 		const parsedJson = json["ingredients"][0]["parsed"][0];
 		const foodName = parsedJson["foodMatch"];
