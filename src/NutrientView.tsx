@@ -96,7 +96,7 @@ export const NutrientView = (props: {
 				alignItems={"center"}>
 				<Stack direction="column" alignItems='center' justifyContent='center' p={3}>
 					<Box textAlign={'center'}>
-						<h1>{nutrient?.split(/\s+/gm).map(x => <span style={{ color: i++ % 2 == 0 ? "#1EB36C" : "#C00F0F" }}>{x} </span>)}</h1>
+						<h1>{nutrient?.split(/\s+/gm).map(x => <span style={{ color: i++ % 2 == 0 ? "#007c00" : "#F9145b" }}>{x} </span>)}</h1>
 						<Divider />
 						<h2 style={{ color: colorString }}>Deficiency rarity: {rarity.toLocaleLowerCase()}</h2>
 						<Divider />

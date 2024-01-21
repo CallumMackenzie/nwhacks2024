@@ -100,8 +100,8 @@ const HomeSignedIn = (props: {
 							</Typography>
 						</Box>
 						<h1>
-							<span style={{ color: "#1EB36C" }}>Vit</span>
-							<span style={{ color: "#C00F0F" }}>Alert</span>
+							<span style={{ color: "#007c00" }}>Vit</span>
+							<span style={{ color: "#F9145b" }}>Alert</span>
 						</h1>
 						<Box
 							display={"flex"}
@@ -134,7 +134,7 @@ const HomeSignedIn = (props: {
 							value={foodInput}
 							placeholder="1 apple, 1 slice pizza, 1 cup rice"
 							onChange={(e) => setFoodInput(e.currentTarget.value)}
-							label={<span style={{ color: 'white' }}>Type <span style={{ color: "#1EB36C" }}>food</span> and <span style={{ color: "#C00F0F" }}>amount . . .</span></span>}
+							label={<span style={{ color: 'white' }}>Type <span style={{ color: "#007c00" }}>food</span> and <span style={{ color: "#F9145b" }}>amount . . .</span></span>}
 							sx={{
 								width: "75%",
 							}}
@@ -215,7 +215,7 @@ const YourFoods = (props: {
 					<Grid item xs={12}>
 						<Stack direction={'row'} alignItems={'center'} justifyContent={'space-around'}>
 							<h2 style={{
-								color: "#1EB36C"
+								color: "#007c00"
 							}}>Your foods . . .</h2>
 							{Array.from(Array(aboveXl ? 7 : aboveLg ? 5 : aboveMd ? 4 : aboveSm ? 3 : 2).keys()).map(i => (<>
 								<Avatar>
@@ -322,7 +322,7 @@ const MissingNutrients = (props: {
 			<Grid container px={3} paddingBottom={1}>
 				<Grid item xs={12}>
 					<h2 style={{
-						color: "#C00F0F"
+						color: "#F9145b"
 					}}>You may be deficient in . . .</h2>
 				</Grid>
 				<Grid item xs={12} paddingBottom={2}>
