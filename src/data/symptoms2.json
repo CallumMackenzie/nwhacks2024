@@ -42,7 +42,8 @@
 		"Thiamin",
 		"Fat",
 		"Vitamin E",
-		"Water"
+		"Water",
+		"Carbohydrate"
 
 	],
 	"Rarity": [
@@ -88,7 +89,8 @@
 		"LESS COMMON",
 		"LESS COMMON",
 		"LESS COMMON",
-		"COMMON"
+		"COMMON",
+		"LESS COMMON"
 	
 		],
 	"Function": [
@@ -134,7 +136,8 @@
 		"Helps the body convert carbohydrates into energy, muscle contraction, conduction of nerve signals",
 		"Give body energy and support cell functions, protect organs, absorb nutrients, produce hormones",
 		"Acts as an antioxidant, enhances immune function, prevents clots from forming in heart arteries",
-		"Maintain a healthy body temperature, lubricate and cushion joints, protect spinal cord and other sensitive tissues, get rid of wastes through urination, perspiration, and bowel movements"
+		"Maintain a healthy body temperature, lubricate and cushion joints, protect spinal cord and other sensitive tissues, get rid of wastes through urination, perspiration, and bowel movements",
+		"Energy source, help control blood glucose and insulin metabolism, help with fermentation"
 	
 	],
 	"Sources": [
@@ -180,7 +183,8 @@
 		"Pork, eggs, yeast, cereal, legumes, rice",
 		"Milk, cheese, butter, cream, biscuits, pastries",
 		"Almonds, peanuts, spinach, pumpkin, peppers",
-		"Ground water, surface water, recycled water"
+		"Ground water, surface water, recycled water",
+		"Oats, lentils, beans, grains, peas"
 
 	],
 	"Symptoms": [
@@ -226,6 +230,7 @@
 		"Fatigue, poor memory, loss of apetite, sleep disturbances, weight loss",
 		"Dry rashes, hair loss, weaker immune system",
 		"Impaired reflexes and coordination, difficulty walking, weak muscles",
-		"Dry mouth, tiredness, dark coloured urine, low blood pressure, headaches, muscle cramps, joint pain"
+		"Dry mouth, tiredness, dark coloured urine, low blood pressure, headaches, muscle cramps, joint pain",
+		"Headaches, dizziness, constipation, weakness, hunger,fatigue bloating, muscle cramps"
 	]
 }
