@@ -1,5 +1,5 @@
-# Vitalert
-## About our project
+# VitAlert
+## About Our Project
 "VitAlert" is a web application designed to help individuals maintain a balanced diet by tracking their daily food intake.
 Our inspiration stems from the growing prevalence of nutrient deficiencies, impacting overall health and well-being. 
 In a world where busy schedules often lead to suboptimal dietary choices, "Vitalert" is a solution that empowers users to make informed decisions about their nutrition.
