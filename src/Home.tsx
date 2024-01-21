@@ -18,6 +18,8 @@ import { SignInRequired, useRequiredSignIn } from "./UseSignIn";
 import LunchDiningIcon from "@mui/icons-material/LunchDining";
 import Avatar from "@mui/material/Avatar";
 
+type FoodResponseType = void;
+
 export const Home = (props: { auth: Auth; firestore: Firestore }) => {
 	const user = useRequiredSignIn(props.auth);
 
@@ -37,6 +39,7 @@ const HomeSignedIn = (props: {
 }) => {
 	const navigate = useNavigate();
 	const [foodInput, setFoodInput] = useState("");
+	const [foods, setFoods] = useState<null | FoodResponseType>(null);
 
 	return (
 		<>
@@ -54,7 +57,7 @@ const HomeSignedIn = (props: {
 						py={2}
 						justifyContent="space-around"
 					>
-						<p></p>
+						<p>{/* Needed for space around */}</p>
 						<h1>
 							<span style={{ color: "#1EB36C" }}>Vit</span>
 							<span style={{ color: "#C00F0F" }}>Alert</span>
@@ -75,8 +78,7 @@ const HomeSignedIn = (props: {
 						direction="row"
 						spacing={2}
 						alignItems={"center"}
-						justifyContent={"center"}
-					>
+						justifyContent={"center"}>
 						<Stack>
 							<Avatar>
 								<LunchDiningIcon></LunchDiningIcon>
@@ -95,15 +97,14 @@ const HomeSignedIn = (props: {
 							disabled={foodInput == ""}
 							variant="contained"
 							onClick={() =>
-								parseFoodInput(props.firestore, props.user, foodInput)
-							}
-						>
+								parseFoodInput(props.firestore, props.user, foodInput, setFoods)
+							}>
 							Submit
 						</Button>
 					</Stack>
 				</Grid>
 				<Grid item xs={12}>
-					<YourFoods />
+					<YourFoods foods={foods} setFoods={setFoods} />
 				</Grid>
 				<Grid item xs={12}>
 					<MissingNutrients />
@@ -113,7 +114,10 @@ const HomeSignedIn = (props: {
 	);
 };
 
-const YourFoods = () => {
+const YourFoods = (props: {
+	foods: FoodResponseType | null,
+	setFoods: (f: FoodResponseType | null) => void,
+}) => {
 	return (
 		<>
 			<Paper>
@@ -159,4 +163,9 @@ const signOut = (auth: Auth, navigate: NavigateFunction) => {
 	navigate("/");
 };
 
-const parseFoodInput = (firestore: Firestore, user: User, input: string) => { };
+const parseFoodInput = (firestore: Firestore,
+	user: User,
+	input: string,
+	setFoods: (f: FoodResponseType | null) => void) => {
+
+};
