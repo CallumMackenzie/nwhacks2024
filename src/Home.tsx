@@ -84,7 +84,6 @@ const HomeSignedIn = (props: {
 					<Stack
 						direction="row"
 						spacing={5}
-						py={2}
 						justifyContent="space-around"
 					>
 						<Box
@@ -154,7 +153,7 @@ const HomeSignedIn = (props: {
 				<Grid item xs={12} lg={6}>
 					<MissingNutrients foods={foods} />
 				</Grid>
-				<Grid item xs={12} paddingY={4} textAlign={'center'}>
+				<Grid item xs={12} paddingTop={4} textAlign={'center'}>
 					Copyright © 2024 Callum Mackenzie, Fegico Chen, Terence Yin, Hieu Le
 				</Grid>
 			</Grid>
