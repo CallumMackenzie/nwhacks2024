@@ -24,6 +24,7 @@ import Avatar from "@mui/material/Avatar";
 import { FoodNutrientMap, Nutrient, NutrientProfile, combineFoodNutrientMaps, getNutrientCommonName, getNutrientValues, removeNutrient, sortByDailyValue, sumNutrients } from "./FoodParsing";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { AdsClick, Delete, DeleteTwoTone } from "@mui/icons-material";
+import { fetchOrCreate, save } from "./FirebaseUtils";
 
 type FoodResponseType = {
 	total: NutrientProfile,
@@ -48,9 +49,25 @@ const HomeSignedIn = (props: {
 	firestore: Firestore;
 }) => {
 	const navigate = useNavigate();
-	const foodSearchTextArea = useRef<HTMLDivElement>(null);
 	const [foodInput, setFoodInput] = useState("");
 	const [foods, setFoods] = useState<null | FoodResponseType>(null);
+
+	useEffect(() => {
+		(async () => {
+			const val = await fetchOrCreate<FoodResponseType>(props.firestore, "/userdata", props.user.uid, () => ({
+				total: new Map(),
+				foods: new Map()
+			}));
+			setFoods(val);
+		})();
+	}, []);
+
+	useEffect(() => {
+		(async () => {
+			if (foods !== null)
+				await save(props.firestore, "/userdata", props.user.uid, foods);
+		})();
+	}, [foods]);
 
 	return (
 		<>
@@ -145,7 +162,7 @@ const YourFoods = (props: {
 	useEffect(() => {
 		if (props.foods === null)
 			return setRows([]);
-		const r = Array.from(props.foods.foods.entries())
+		const r = Array.from(props.foods.foods)
 			.map(set => {
 				const key = set[0], value = set[1];
 				return ({
@@ -174,23 +191,25 @@ const YourFoods = (props: {
 						}}>
 							{rows.map(row => {
 								return (<>
-									<ListItem secondaryAction={
-										<IconButton edge="end" aria-label="delete"
-											onClick={() => {
-												if (props.foods === null)
-													return;
-												const newNutrientList = removeNutrient(props.foods?.foods, row.id);
-												const newTotal = sumNutrients(Array.from(newNutrientList.values()).map(x => x.nutrients));
-												props.setFoods({
-													total: newTotal, foods: newNutrientList
-												});
-											}}>
-											<Delete sx={{
-												color: 'white'
-											}} />
-										</IconButton>
-									}>
-										<ListItemText>
+									<ListItem
+										key={row.id}
+										secondaryAction={
+											<IconButton edge="end" aria-label="delete"
+												onClick={() => {
+													if (props.foods === null)
+														return;
+													const newNutrientList = removeNutrient(props.foods?.foods, row.id);
+													const newTotal = sumNutrients(Array.from(newNutrientList.values()).map(x => x.nutrients));
+													props.setFoods({
+														total: newTotal, foods: newNutrientList
+													});
+												}}>
+												<Delete sx={{
+													color: 'white'
+												}} />
+											</IconButton>
+										}>
+										<ListItemText key={row.id}>
 											{row.id} {row.quantity}
 										</ListItemText>
 									</ListItem>
@@ -247,13 +266,15 @@ const MissingNutrients = (props: {
 					}}>
 						{rows.map(row => {
 							return (<>
-								<ListItem secondaryAction={
-									<ListItemButton>
-										<AdsClick />
-									</ListItemButton>
-								}>
-									<ListItemText>
-										{row.id} {row.value} {row.unit} -- {row.percentDaily}% 
+								<ListItem
+									key={row.id}
+									secondaryAction={
+										<ListItemButton key={row.id}>
+											<AdsClick />
+										</ListItemButton>
+									}>
+									<ListItemText key={row.id}>
+										{row.id} {row.value} {row.unit} -- {row.percentDaily}%
 									</ListItemText>
 								</ListItem>
 							</>);

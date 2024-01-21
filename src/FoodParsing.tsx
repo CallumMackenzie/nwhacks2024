@@ -177,7 +177,7 @@ export const getNutrientValues = async (input: string): Promise<FoodNutrientMap>
 export const sumNutrients = (input: Array<NutrientProfile>): NutrientProfile => {
 	const sum: NutrientProfile = new Map();
 	input.forEach(profile => {
-		profile.forEach((value: UnitValue, key: Nutrient) => {
+		Array.from(profile).forEach(([key, value]) => {
 			const prevValue = sum.get(key);
 			if (prevValue !== undefined && prevValue.unit !== value.unit)
 				console.error("UNIT MISMATCH: " + JSON.stringify(prevValue) + JSON.stringify(value));
@@ -200,7 +200,7 @@ export const sumNutrients = (input: Array<NutrientProfile>): NutrientProfile => 
 
 export const removeNutrient = (a: FoodNutrientMap, toRemove: string): FoodNutrientMap => {
 	const ret = new Map();
-	a.forEach((value, key) => {
+	Array.from(a).forEach(([key, value]) => {
 		if (key != toRemove)
 			ret.set(key, value);
 	});
@@ -209,7 +209,7 @@ export const removeNutrient = (a: FoodNutrientMap, toRemove: string): FoodNutrie
 
 export const combineFoodNutrientMaps = (a: FoodNutrientMap, b: FoodNutrientMap): FoodNutrientMap => {
 	const ret: FoodNutrientMap = new Map();
-	a.forEach((value, key) => {
+	Array.from(a).forEach(([key, value]) => {
 		ret.set(key, value);
 	});
 	b.forEach((value, key) => {
@@ -229,7 +229,7 @@ export const combineFoodNutrientMaps = (a: FoodNutrientMap, b: FoodNutrientMap):
 
 export const sortByDailyValue = (total: NutrientProfile): Array<[Nutrient, UnitValue]> => {
 	let low: Array<[Nutrient, UnitValue]> = [];
-	total.forEach((value, key) => {
+	Array.from(total).forEach(([key, value]) => {
 		low.push([key, value]);
 	});
 	const ret = low.sort((a, b) => (a[1].percentDaily ?? 1.1) - (b[1].percentDaily ?? 1.1));
