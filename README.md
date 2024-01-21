@@ -38,5 +38,5 @@ Receiving Food Suggestions:
 Editing and Deleting Entries:
 * As a user, I want to be able to edit or delete entries in my food intake log, in case I make a mistake or want to update the information.
 
-# Copyright Information
+## Copyright Information
 Copyright © 2024 Callum Mackenzie, Fegico Chen, Terence Yin, Hieu Le
