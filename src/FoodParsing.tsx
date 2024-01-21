@@ -137,7 +137,6 @@ export const getNutrientValues = async (input: string): Promise<FoodNutrientMap>
 							[Nutrient.Potassium]: quantity / 2800 * 100,
 							[Nutrient.Thiamin]: quantity / 1.15 * 100,
 							[Nutrient.Riboflavin]: quantity / 1.2 * 100,
-							[Nutrient.NetCarbohydrate]: undefined,
 							[Nutrient.Fat]: quantity / 40 * 100,
 							[Nutrient.Calories]: quantity / 2200 * 100,
 							[Nutrient.SaturatedFat]: quantity / 15 * 100,
@@ -151,7 +150,9 @@ export const getNutrientValues = async (input: string): Promise<FoodNutrientMap>
 							[Nutrient.Zinc]: quantity / 10 * 100,
 							[Nutrient.VitaminK]: quantity / 70 * 100,
 							[Nutrient.Phosphorus]: quantity / 1200 * 100,
-							[Nutrient.Sugar]: quantity / 30 * 100
+							[Nutrient.Sugar]: quantity / 30 * 100,
+							[Nutrient.NetCarbohydrate]: quantity / 190 * 100,
+							[Nutrient.FolateTotal]: quantity / 400 * 100
 						}[v[1] as string];
 					}
 					else

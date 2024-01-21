@@ -26,6 +26,7 @@ import { FoodNutrientMap, Nutrient, NutrientProfile, combineFoodNutrientMaps, ge
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { AdsClick, Delete, DeleteTwoTone } from "@mui/icons-material";
 import { fetchOrCreate, save } from "./FirebaseUtils";
+import { useDataGridProps } from "@mui/x-data-grid/DataGrid/useDataGridProps";
 
 type FoodResponseType = {
 	total: NutrientProfile,
@@ -168,7 +169,8 @@ const YourFoods = (props: {
 	interface Row {
 		id: string,
 		measure: string,
-		quantity: number
+		quantity: number,
+		key: number,
 	}
 
 	const [rows, setRows] = useState<Array<Row>>([]);
@@ -176,11 +178,13 @@ const YourFoods = (props: {
 	useEffect(() => {
 		if (props.foods === null)
 			return setRows([]);
+		let uid = 0;
 		const r = Array.from(props.foods.foods)
 			.map(set => {
 				const key = set[0], value = set[1];
 				return ({
 					id: key,
+					key: uid++,
 					measure: value.measure,
 					quantity: value.quantity,
 				});
@@ -206,7 +210,7 @@ const YourFoods = (props: {
 							{rows.map(row => {
 								return (<>
 									<ListItem
-										key={row.id}
+										key={row.key}
 										secondaryAction={
 											<IconButton edge="end" aria-label="delete"
 												onClick={() => {
@@ -223,7 +227,7 @@ const YourFoods = (props: {
 												}} />
 											</IconButton>
 										}>
-										<ListItemText key={row.id}>
+										<ListItemText key={row.key}>
 											{row.id} {row.quantity}
 										</ListItemText>
 									</ListItem>
@@ -244,6 +248,7 @@ const MissingNutrients = (props: {
 
 	interface Row {
 		id: string,
+		key: number,
 		percentDaily: number,
 		value: number,
 		unit: string
@@ -254,11 +259,13 @@ const MissingNutrients = (props: {
 	useEffect(() => {
 		if (props.foods == null)
 			return setRows([]);
+		let uid = 0;
 		const belowVal = sortByDailyValue(props.foods.total).map(x => ({
 			id: getNutrientCommonName(x[0]),
 			percentDaily: Number(x[1].percentDaily?.toPrecision(3)),
 			value: Number(x[1].quantity.toPrecision(3)),
-			unit: x[1].unit
+			unit: x[1].unit,
+			key: uid++,
 		})).filter(x => !isNaN(x.value) && !isNaN(x.percentDaily));
 		setRows(belowVal);
 	}, [props.foods]);
@@ -281,10 +288,10 @@ const MissingNutrients = (props: {
 						{rows.map(row => {
 							return (<>
 								<ListItem
-									key={row.id}
+									key={row.key}
 									secondaryAction={
 										<Tooltip title={"Information on " + row.id}>
-											<ListItemButton key={row.id}
+											<ListItemButton key={row.key}
 												disabled={getSymptomData(row.id) === undefined}
 												onClick={() => {
 													navigate(`/nutrient?nutrient=${row.id}`);
@@ -293,7 +300,7 @@ const MissingNutrients = (props: {
 											</ListItemButton>
 										</Tooltip>
 									}>
-									<ListItemText key={row.id}
+									<ListItemText key={row.key}
 										secondary={
 											<React.Fragment>
 												{getSymptomData(row.id)?.symptoms}
