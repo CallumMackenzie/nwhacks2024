@@ -29,11 +29,9 @@ export const theme = createTheme({
 	palette: {
 		primary: {
 			main: "#1EB36C",
-			contrastText: "#C3CbCb",
 		},
 		secondary: {
 			main: "#C00F0F",
-			contrastText: "#C3CbCb"
 		},
 		background: {
 			default: "#0e1111",
@@ -42,10 +40,17 @@ export const theme = createTheme({
 		text: {
 			primary: "#C3CbCb",
 			secondary: "#F5F5F5",
-			disabled: "#FCC8D1"
+			disabled: "#a9b1b8"
 		},
 		divider: "#C3CbCb",
+		action: {
+			disabled: "#a9b1b8",
+			disabledBackground: "#272e33",
+		},
 	},
+	typography: {
+		fontFamily: 'Fredoka, sans-serif'
+	}
 });
 
 const App = () => {

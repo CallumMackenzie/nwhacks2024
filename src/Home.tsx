@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Auth, User } from "firebase/auth";
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { Firestore } from 'firebase/firestore';
-import { Backdrop, Box, Button, Divider, Grid, List, ListItem, Paper, Stack, TextField } from '@mui/material';
+import { Backdrop, Box, Button, Divider, Grid, List, ListItem, Paper, Stack, TextField, Tooltip } from '@mui/material';
 import { SignInRequired, useRequiredSignIn } from './UseSignIn';
 
 export const Home = (props: {
@@ -34,9 +34,10 @@ const HomeSignedIn = (props: {
 					py={2}
 					justifyContent='space-around'>
 					<p></p>
-					<h1><span style={{ color: "#1EB36C" }}>Vit</span><span style={{ color: "#C00F0F" }}>Alert</span></h1>
+					<h1><span style={{ color: "#1EB36C" }}>VIT</span><span style={{ color: "#C00F0F" }}>ALERT</span></h1>
 					<Box display={'flex'} justifyContent={'center'} alignItems={'center'}>
-						<Button onClick={() => signOut(props.auth, navigate)}>Sign Out</Button>
+						<Button variant='outlined'
+							onClick={() => signOut(props.auth, navigate)}>Sign Out</Button>
 					</Box>
 				</Stack>
 			</Grid>
@@ -54,7 +55,7 @@ const HomeSignedIn = (props: {
 						disabled={foodInput == ""}
 						variant='contained'
 						onClick={() => parseFoodInput(props.firestore, props.user, foodInput)}>
-						Submit
+						Record Foods
 					</Button>
 				</Stack>
 			</Grid>
@@ -109,6 +110,27 @@ const MissingNutrients = () => {
 		</Paper>
 	</>);
 };
+
+// const Graphs = () => {
+// 	return (<>
+// 		<Grid item xs={6}>
+// 			<iframe src="https://ourworldindata.org/grapher/prevalence-of-vitamin-a-deficiency-in-children"
+// 				loading="lazy"
+// 				style={{
+// 					width: "100%",
+// 					height: "600px"
+// 				}} />
+// 		</Grid>
+// 		<Grid item xs={6}>
+// 			<iframe src="https://ourworldindata.org/grapher/prevalence-of-vitamin-a-deficiency-in-children"
+// 				loading="lazy"
+// 				style={{
+// 					width: "100%",
+// 					height: "600px"
+// 				}} />
+// 		</Grid>
+// 	</>);
+// };
 
 const signOut = (auth: Auth, navigate: NavigateFunction) => {
 	auth.signOut();
