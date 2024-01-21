@@ -15,11 +15,16 @@ import {
 	CardContent,
 	Typography,
 	ImageList,
-	ImageListItem
+	ImageListItem,
+	useMediaQuery,
+	bottomNavigationActionClasses
 } from "@mui/material";
 
 import symptomsJson from "./data/symptoms2.json";
+
+import foodJson from "./data/foodImage.json";
 import { getSymptomData } from "./FoodParsing";
+import { theme } from "./App";
 
 // https://vitalert.com?nutrient="Vitamin A"
 // http://localhost:3000/nutrient?nutrient=%22Vitamin%20A%22
@@ -28,64 +33,6 @@ import { getSymptomData } from "./FoodParsing";
 // Get the data for the other fields (function, symptoms)
 // Put them in UI nicely
 
-
-const itemData = [
-	{
-		img: 'https://source.unsplash.com/person-pours-milk-into-glass-_8bnn1GqX70', // start of Vitamin A
-		title: 'Milk',
-	},
-	{
-		img: 'https://source.unsplash.com/person-holding-brown-egg-on-green-ceramic-bowl-onxjrr3Erwc',
-		title: 'Egg',
-	},
-	{
-		img: 'https://source.unsplash.com/brown-ceramic-bowl-with-brown-and-white-beans-UD_hXnHe5ZI',
-		title: 'Cereal',
-	},
-	{
-		img: 'https://source.unsplash.com/orange-fruits-on-white-ceramic-plate-A4BBdJQu2co',
-		title: 'Orange'
-	},
-	{
-		img: 'https://source.unsplash.com/close-up-photo-of-vegetable-salad--ftWfohtjNw',
-		title: 'Salad'
-	},
-	{
-		img: 'https://source.unsplash.com/orange-carrots-on-green-grass-GHRT9j21m2M', // end of Vitamin A
-		title: 'Carrot'
-	},
-	{
-		// ommitted ALPHA LIPOIC ACID
-		// ommitted ASPARAGINE
-		// ommitted BIOTIN
-
-		img: 'https://source.unsplash.com/green-broccoli-on-white-ceramic-plate-jSQxj-Ug0H8', // start of CA (Calcium)
-		title: 'Brocolli'
-	},
-	{
-		img: 'https://source.unsplash.com/green-lettuce-on-red-plastic-container-ipCEymapISc',
-		title: 'Cabbage'
-	},
-	{
-		img: 'https://source.unsplash.com/a-large-pile-of-nuts-sitting-next-to-each-other-gXLFAWv4TCc',
-		title: 'Hazelnuts'
-	},
-	{
-		img: 'https://source.unsplash.com/sliced-fruit-on-black-ceramic-plate-3PNVc3O7Gb4',
-		title: 'Oysters'
-	},
-	{
-		img: 'https://source.unsplash.com/fresh-frozen-anchovy-on-shelves-of-huge-industrial-refrigerator-sib5507yIBA',
-		title: 'Sardines'
-	},
-	{
-		img: 'https://source.unsplash.com/two-black-and-white-dairy-cows-looking-on-white-bottles-ru4jyDiLHsI',
-		title: 'Dairy'
-	},
-]
-
-
-
 export const NutrientView = (props: {
 }) => {
 	const navigate = useNavigate();
@@ -93,13 +40,20 @@ export const NutrientView = (props: {
 	const queryParams = new URLSearchParams(location.search);
 	const nutrient = queryParams.get('nutrient');
 
-	console.log(nutrient);
+	const aboveXl = useMediaQuery(theme.breakpoints.up('xl')),
+		aboveLg = useMediaQuery(theme.breakpoints.up('lg')),
+		aboveMd = useMediaQuery(theme.breakpoints.up('md')),
+		aboveSm = useMediaQuery(theme.breakpoints.up('sm')),
+		aboveXs = useMediaQuery(theme.breakpoints.up('xs'));
+
+	// console.log(nutrient);
 
 	// nutrient is the value of the nutrient query parameter
 	// const { nutrient } = useParams();
 
 
 
+	// const nutrient = "ALPHA LIPOIC ACID";
 	//const nutrient = "VITAMIN A";
 	const data = getSymptomData(nutrient ?? "");
 	if (data === undefined)
@@ -110,9 +64,14 @@ export const NutrientView = (props: {
 			</Stack>
 		</>);
 	const { name, rarity, func, sources, symptoms } = data;
+	let itemData: any = [];
 	let sourceList = sources.split(",");
 	sourceList = sourceList.map((data) => (data.trim().toLowerCase()));
-	console.log(sourceList);
+	sourceList.forEach((item) => {
+		if (Object.hasOwn(foodJson, item)) {
+			itemData.push(foodJson[item as keyof typeof foodJson]);
+		}
+	})
 	let colorString: string;
 
 	if (rarity === "MOST COMMON") {
@@ -127,40 +86,53 @@ export const NutrientView = (props: {
 	else {
 		colorString = "red";
 	}
+	let i = 0;
 
 	return (
 		<>
-			<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', paddingTop: '50px' }}>
-				<Card variant="outlined" style={{ margin: 'auto', maxWidth: "75%" }}>
-					<CardContent>
-						<Typography variant="h2" component="div" align="center" gutterBottom style={{ fontSize: '3.0rem' }}>
-							{nutrient}
-						</Typography>
-						<Typography color={colorString} align="center" gutterBottom style={{ fontSize: '2.0rem' }}>
-							<strong>Rarity:</strong> {rarity}
-						</Typography>
-						<Typography color="textSecondary" align="center" gutterBottom style={{ fontSize: '2.0rem' }}>
-							<strong>Symptoms:</strong> {symptoms}
-						</Typography>
-						<Typography color="textSecondary" align="center" style={{ fontSize: '2.0rem' }}>
-							<strong>Nutrient Resource:</strong> {sources}
-						</Typography>
-					</CardContent>
+			<Box
+				display={"flex"}
+				justifyContent={"center"}
+				alignItems={"center"}>
+				<Stack direction="column" alignItems='center' justifyContent='center' p={3}>
+					<Box textAlign={'center'}>
+						<h1>{nutrient?.split(/\s+/gm).map(x => <span style={{ color: i++ % 2 == 0 ? "#1EB36C" : "#C00F0F" }}>{x} </span>)}</h1>
+						<Divider />
+						<h2 style={{ color: colorString }}>Rarity: {rarity}</h2>
+						<Divider />
+						<h2>Symptoms</h2>
+						<p>{symptoms}</p>
+						<Divider />
+						<h2>Foods with {nutrient}</h2>
+						<p>{sources}</p>
+						<Divider />
+						<h2>Functions of {nutrient} in the Body</h2>
+						<p>{func}</p>
+						<Divider />
+					</Box>
 
-					<ImageList sx={{ width: 600, height: 300 }} cols={3} rowHeight={164}>
-						{itemData.map((item) => (
-							<ImageListItem key={item.img}>
+					<ImageList variant="masonry"
+						sx={{
+							width: aboveXl ? 1000 : aboveLg ? 850 : aboveMd ? 650 : aboveSm ? 450 : 275,
+						}}
+						cols={2} rowHeight={164}>
+						{itemData.map((item: any) => (
+							<ImageListItem key={item}>
 								<img
-									srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-									src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-									alt={item.title}
+									srcSet={`${item}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+									src={`${item}?w=164&h=164&fit=crop&auto=format`}
 									loading="lazy"
 								/>
 							</ImageListItem>
 						))}
 					</ImageList>
-				</Card>
-			</div>
+					<Button
+						onClick={() => navigate("/home")}
+						variant='contained'>
+						Home
+					</Button>
+				</Stack>
+			</Box >
 		</>
 	);
 };
