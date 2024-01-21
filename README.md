@@ -1,4 +1,7 @@
 # VitAlert
+
+![VitAlert Logo](images/VitAlert-Full.png)
+
 ## About Our Project
 "VitAlert" is a web application designed to help individuals maintain a balanced diet by tracking their daily food intake. Developed during the 24-hour NWHacks 2024 hackathon.
 Our inspiration stems from the growing prevalence of nutrient deficiencies, impacting overall health and well-being. 
