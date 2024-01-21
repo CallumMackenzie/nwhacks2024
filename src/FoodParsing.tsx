@@ -153,7 +153,7 @@ export const getNutrientValues = async (input: string): Promise<FoodNutrientMap>
 							[Nutrient.Sugar]: quantity / 30 * 100,
 							[Nutrient.NetCarbohydrate]: quantity / 190 * 100,
 							[Nutrient.FolateTotal]: quantity / 400 * 100,
-							[Nutrient.FolateFood]: quantity / 400 * 100,
+							[Nutrient.FolateFood]: NaN,
 							[Nutrient.FolicAcid]: NaN
 						}[v[1] as string];
 					}
