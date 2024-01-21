@@ -1,11 +1,23 @@
 # VitAlert
 ## About Our Project
-"VitAlert" is a web application designed to help individuals maintain a balanced diet by tracking their daily food intake.
+"VitAlert" is a web application designed to help individuals maintain a balanced diet by tracking their daily food intake. Developed during the 24-hour NWHacks 2024 hackathon.
 Our inspiration stems from the growing prevalence of nutrient deficiencies, impacting overall health and well-being. 
 In a world where busy schedules often lead to suboptimal dietary choices, "Vitalert" is a solution that empowers users to make informed decisions about their nutrition.
 Our mission is to bridge the gap between dietary habits and optimal health by providing actionable insights tailored to individual needs.
 Unlike generic nutrition apps, "Vitalert" goes beyond tracking; it actively identifies nutrient deficiencies and suggests personalized dietary adjustments.
 We believe in not just monitoring but guiding users toward a healthier lifestyle.
+
+## Features
+Personalized nutrient tracking
+Actionable insights for informed nutrition choices
+User-friendly interface for seamless experience
+
+## Getting Started
+1. Clone the repository: `git clone https://github.com/your-username/Vitalert.git`
+2. Navigate to the project directory: `cd Vitalert`
+3. Install dependencies: `npm install`
+4. Configure API keys: Add your Edamam API keys to the configuration file.
+5. Run the application: `npm start`
 
 ## User Stories
 User Registration and Login: 
@@ -25,3 +37,5 @@ As a user, I want the application to suggest specific foods that can help me ful
 
 Editing and Deleting Entries:
 As a user, I want to be able to edit or delete entries in my food intake log, in case I make a mistake or want to update the information.
+
+Copyright © 2024 Callum Mackenzie, Fegico Chen, Terence Yin, Hieu Le
