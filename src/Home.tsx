@@ -153,9 +153,6 @@ const HomeSignedIn = (props: {
 				<Grid item xs={12} lg={6}>
 					<MissingNutrients foods={foods} />
 				</Grid>
-				<Grid item xs={12} textAlign={'center'}>
-					<h3>Where is our data sourced ?</h3>
-				</Grid>
 				<Grid item xs={12} paddingY={4} textAlign={'center'}>
 					Copyright © 2024 Callum Mackenzie, Fegico Chen, Terence Yin, Hieu Le
 				</Grid>
