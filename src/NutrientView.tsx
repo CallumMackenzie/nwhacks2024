@@ -86,7 +86,7 @@ export const NutrientView = (props: {
 	else {
 		colorString = "red";
 	}
-
+	let i = 0;
 
 	return (
 		<>
@@ -96,7 +96,7 @@ export const NutrientView = (props: {
 				alignItems={"center"}>
 				<Stack direction="column" alignItems='center' justifyContent='center' p={3}>
 					<Box textAlign={'center'}>
-						<h1>{nutrient}</h1>
+						<h1>{nutrient?.split(/\s+/gm).map(x => <span style={{ color: i++ % 2 == 0 ? "#1EB36C" : "#C00F0F" }}>{x} </span>)}</h1>
 						<Divider />
 						<h2 style={{ color: colorString }}>Rarity: {rarity}</h2>
 						<Divider />
