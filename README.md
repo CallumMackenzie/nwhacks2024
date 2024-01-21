@@ -13,8 +13,8 @@ We believe in not just monitoring but guiding users toward a healthier lifestyle
 * User-friendly interface for seamless experience
 
 ## Getting Started
-1. Clone the repository: `git clone https://github.com/your-username/Vitalert.git`
-2. Navigate to the project directory: `cd Vitalert`
+1. Clone the repository: `git clone https://github.com/CallumMackenzie/nwhacks2024`
+2. Navigate to the project directory: `cd nwhacks2024`
 3. Install dependencies: `npm install`
 4. Configure API keys: Add your Edamam API keys to the configuration file.
 5. Run the application: `npm start`
