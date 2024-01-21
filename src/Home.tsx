@@ -17,8 +17,12 @@ import {
 import { SignInRequired, useRequiredSignIn } from "./UseSignIn";
 import LunchDiningIcon from "@mui/icons-material/LunchDining";
 import Avatar from "@mui/material/Avatar";
+import { FoodNutrientMap, NutrientProfile, combineFoodNutrientMaps, getNutrientValues, sumNutrients } from "./FoodParsing";
 
-type FoodResponseType = void;
+type FoodResponseType = {
+	total: NutrientProfile,
+	foods: FoodNutrientMap
+};
 
 export const Home = (props: { auth: Auth; firestore: Firestore }) => {
 	const user = useRequiredSignIn(props.auth);
@@ -97,7 +101,7 @@ const HomeSignedIn = (props: {
 							disabled={foodInput == ""}
 							variant="contained"
 							onClick={() =>
-								parseFoodInput(props.firestore, props.user, foodInput, setFoods)
+								parseFoodInput(props.firestore, props.user, foodInput, foods, setFoods)
 							}>
 							Submit
 						</Button>
@@ -129,7 +133,17 @@ const YourFoods = (props: {
 						<Divider />
 					</Grid>
 					<Grid item xs={12}>
-						<List>{/* TODO */}</List>
+						<List>
+							{props.foods !== null ? Array.from(props.foods.foods.entries())
+								.map(set => {
+									const key = set[0], value = set[1];
+									return (<>
+										<ListItem key={key}>
+											<p>{key}</p>
+										</ListItem>
+									</>);
+								}) : (<></>)}
+						</List>
 					</Grid>
 				</Grid>
 			</Paper>
@@ -138,7 +152,6 @@ const YourFoods = (props: {
 };
 
 const MissingNutrients = () => {
-
 	return (<>
 		<Paper>
 			<Grid container p={3}>
@@ -163,9 +176,17 @@ const signOut = (auth: Auth, navigate: NavigateFunction) => {
 	navigate("/");
 };
 
-const parseFoodInput = (firestore: Firestore,
+const parseFoodInput = async (firestore: Firestore,
 	user: User,
 	input: string,
+	foods: FoodResponseType | null,
 	setFoods: (f: FoodResponseType | null) => void) => {
-
+	let foodValues = await getNutrientValues(input);
+	if (foods !== null)
+		foodValues = combineFoodNutrientMaps(foods.foods, foodValues);
+	const totals = sumNutrients(Array.from(foodValues.values()));
+	setFoods({
+		total: totals,
+		foods: foodValues
+	});
 };
