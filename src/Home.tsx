@@ -18,7 +18,7 @@ import {
 import { SignInRequired, useRequiredSignIn } from "./UseSignIn";
 import LunchDiningIcon from "@mui/icons-material/LunchDining";
 import Avatar from "@mui/material/Avatar";
-import { FoodNutrientMap, NutrientProfile, combineFoodNutrientMaps, getNutrientValues, sumNutrients } from "./FoodParsing";
+import { FoodNutrientMap, NutrientProfile, combineFoodNutrientMaps, getBelowDailyValue, getNutrientValues, sumNutrients } from "./FoodParsing";
 
 type FoodResponseType = {
 	total: NutrientProfile,
@@ -112,7 +112,7 @@ const HomeSignedIn = (props: {
 					<YourFoods foods={foods} setFoods={setFoods} />
 				</Grid>
 				<Grid item xs={12} lg={6}>
-					<MissingNutrients />
+					<MissingNutrients foods={foods} />
 				</Grid>
 			</Grid>
 		</>
@@ -139,7 +139,7 @@ const YourFoods = (props: {
 								.map(set => {
 									const key = set[0], value = set[1];
 									return (<>
-										<ListItemText key={key} primary={key + " " + value.quantity + " " + value.measure} />
+										<ListItemText key={key} primary={key + " " + value.quantity} />
 									</>);
 								}) : (<></>)}
 						</List>
@@ -150,7 +150,10 @@ const YourFoods = (props: {
 	);
 };
 
-const MissingNutrients = () => {
+const MissingNutrients = (props: {
+	foods: FoodResponseType | null,
+}) => {
+
 	return (<>
 		<Paper>
 			<Grid container p={3}>
@@ -162,7 +165,11 @@ const MissingNutrients = () => {
 				</Grid>
 				<Grid item xs={12}>
 					<List>
-						{/* TODO */}
+						{props.foods !== null && getBelowDailyValue(props.foods.total).map(nutrient => {
+							return (<>
+								<ListItemText key={nutrient} primary={nutrient} />
+							</>);
+						})}
 					</List>
 				</Grid>
 			</Grid>

@@ -14,6 +14,7 @@ export interface UnitValue {
 	unit: string,
 	label: string,
 	quantity: number,
+	percentDaily: number,
 };
 
 export enum Nutrient {
@@ -70,6 +71,10 @@ export const getNutrientValues = async (input: string): Promise<FoodNutrientMap>
 		Object.entries(Nutrient)
 			.forEach(v => {
 				const nutrientUnitValue = json["totalNutrients"][v[1]] as UnitValue | undefined;
+				if (nutrientUnitValue !== undefined) {
+					const totalDaily = json["totalDaily"][v[1]];
+					nutrientUnitValue.percentDaily = totalDaily === undefined ? 0 : totalDaily["quantity"];
+				}
 				if (nutrientUnitValue !== undefined)
 					foodNutrients.set(v[0] as Nutrient, nutrientUnitValue);
 			});
@@ -99,10 +104,12 @@ export const sumNutrients = (input: Array<NutrientProfile>): NutrientProfile => 
 				unit: value.unit,
 				quantity: value.quantity,
 				label: value.label,
+				percentDaily: value.percentDaily
 			} : {
 				unit: prevValue.unit,
 				quantity: prevValue.quantity + value.quantity,
 				label: prevValue.label,
+				percentDaily: prevValue.percentDaily + value.percentDaily
 			});
 		});
 	});
@@ -128,3 +135,12 @@ export const combineFoodNutrientMaps = (a: FoodNutrientMap, b: FoodNutrientMap):
 	});
 	return ret;
 }
+
+export const getBelowDailyValue = (total: NutrientProfile): Array<string> => {
+	const low: Array<string> = [];
+	total.forEach((value, key) => {
+		if (value.percentDaily < 1)
+			low.push(key);
+	});
+	return low;
+};
