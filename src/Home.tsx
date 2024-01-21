@@ -46,7 +46,7 @@ const HomeSignedIn = (props: {
 			<Grid
 				container
 				spacing={2}
-				px={8}
+				px={4}
 				justifyContent={"center"}
 				alignItems={"center"}
 			>
@@ -103,10 +103,10 @@ const HomeSignedIn = (props: {
 						</Button>
 					</Stack>
 				</Grid>
-				<Grid item xs={12}>
+				<Grid item xs={12} lg={6}>
 					<YourFoods foods={foods} setFoods={setFoods} />
 				</Grid>
-				<Grid item xs={12}>
+				<Grid item xs={12} lg={6}>
 					<MissingNutrients />
 				</Grid>
 			</Grid>
