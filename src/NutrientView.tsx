@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import {
 	Backdrop,
 	Box,
@@ -88,9 +88,18 @@ const itemData = [
 export const NutrientView = (props: {
 }) => {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const queryParams = new URLSearchParams(location.search);
+	const nutrient = queryParams.get('nutrient');
+
+	console.log(nutrient);
+
 	// nutrient is the value of the nutrient query parameter
-	const { nutrient } = useParams();
-	// const nutrient = "VITAMIN A";
+	// const { nutrient } = useParams();
+
+
+
+	//const nutrient = "VITAMIN A";
 	let index = -1;
 	for (let i = 0; i < symptomsJson.Name.length; i++) {
 		if (symptomsJson.Name[i] === nutrient) {
