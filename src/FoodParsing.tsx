@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import symptomsJson from "./data/symptoms2.json";
 
 export type NutrientProfile = Map<Nutrient, UnitValue>;
 export type FoodNutrientMap = Map<string, FoodInfo>;
@@ -42,7 +43,7 @@ export enum Nutrient {
 	Riboflavin = "RIBF",
 	Niacin = "NIA",
 	VitaminB6 = "VITB6A",
-	FolateTotal = "FOLFE",
+	FolateTotal = "FOLDFE",
 	FolateFood = "FOLFD",
 	FolicAcid = "FOLAC",
 	VitaminB12 = "VITB12",
@@ -136,7 +137,6 @@ export const getNutrientValues = async (input: string): Promise<FoodNutrientMap>
 							[Nutrient.Potassium]: quantity / 2800 * 100,
 							[Nutrient.Thiamin]: quantity / 1.15 * 100,
 							[Nutrient.Riboflavin]: quantity / 1.2 * 100,
-							[Nutrient.NetCarbohydrate]: undefined,
 							[Nutrient.Fat]: quantity / 40 * 100,
 							[Nutrient.Calories]: quantity / 2200 * 100,
 							[Nutrient.SaturatedFat]: quantity / 15 * 100,
@@ -150,14 +150,23 @@ export const getNutrientValues = async (input: string): Promise<FoodNutrientMap>
 							[Nutrient.Zinc]: quantity / 10 * 100,
 							[Nutrient.VitaminK]: quantity / 70 * 100,
 							[Nutrient.Phosphorus]: quantity / 1200 * 100,
-							[Nutrient.Sugar]: quantity / 30 * 100
+							[Nutrient.Sugar]: quantity / 30 * 100,
+							[Nutrient.NetCarbohydrate]: quantity / 190 * 100,
+							[Nutrient.FolateTotal]: quantity / 400 * 100,
+							[Nutrient.FolateFood]: quantity / 400 * 100,
+							[Nutrient.FolicAcid]: NaN
 						}[v[1] as string];
 					}
 					else
 						nutrientUnitValue.percentDaily = totalDaily["quantity"];
-				}
-				if (nutrientUnitValue !== undefined)
 					foodNutrients.set(v[0] as Nutrient, nutrientUnitValue);
+				} else
+					foodNutrients.set(v[0] as Nutrient, {
+						percentDaily: 0,
+						quantity: 0,
+						unit: "g",
+						label: v[0] as string,
+					});
 			});
 		const parsedJson = json["ingredients"][0]["parsed"][0];
 		const foodName = parsedJson["foodMatch"];
@@ -234,4 +243,32 @@ export const sortByDailyValue = (total: NutrientProfile): Array<[Nutrient, UnitV
 	});
 	const ret = low.sort((a, b) => (a[1].percentDaily ?? 1.1) - (b[1].percentDaily ?? 1.1));
 	return ret;
+};
+
+export interface DeficiencyData {
+	name: string,
+	rarity: string,
+	func: string,
+	sources: string,
+	symptoms: string,
+}
+
+export const getSymptomData = (name: string): DeficiencyData | undefined => {
+	let index = -1;
+	for (let i = 0; i < symptomsJson.Name.length; i++) {
+		if ((symptomsJson.Name[i] as string).toLowerCase().trim()
+			== name.toLowerCase().trim().replaceAll(/\s+/gm, " ")) {
+			index = i;
+			break;
+		}
+	}
+	if (index == -1)
+		return undefined;
+	return {
+		name: symptomsJson.Name[index],
+		rarity: symptomsJson.Rarity[index],
+		func: symptomsJson.Function[index],
+		sources: symptomsJson.Sources[index],
+		symptoms: symptomsJson.Symptoms[index]
+	};
 };

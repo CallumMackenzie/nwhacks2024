@@ -11,15 +11,17 @@ import {
 	Paper,
 	Stack,
 	TextField,
-	Card, 
-	CardContent, 
+	Card,
+	CardContent,
 	Typography,
 	ImageList,
 	ImageListItem
 } from "@mui/material";
 
 import symptomsJson from "./data/symptoms2.json";
+
 import foodJson from "./data/foodImage.json";
+import { getSymptomData } from "./FoodParsing";
 
 // https://vitalert.com?nutrient="Vitamin A"
 // http://localhost:3000/nutrient?nutrient=%22Vitamin%20A%22
@@ -51,6 +53,9 @@ export const NutrientView = (props: {
 		}
 	}
 	if (index == -1)
+	//const nutrient = "VITAMIN A";
+	const data = getSymptomData(nutrient ?? "");
+	if (data === undefined)
 		return (<>
 			<Stack spacing='2' direction={'column'} alignItems={'center'}>
 				<h2>Not found: {nutrient}!</h2>
@@ -71,7 +76,7 @@ export const NutrientView = (props: {
 		}
 	})
 	let colorString: string;
-	
+
 	if (rarity === "MOST COMMON") {
 		colorString = "green";
 	} else if (rarity === "VERY COMMON") {
@@ -80,7 +85,7 @@ export const NutrientView = (props: {
 		colorString = "orange";
 	} else if (rarity === "LESS COMMON") {
 		colorString = "yellow";
-	} 
+	}
 	else {
 		colorString = "red";
 	}
