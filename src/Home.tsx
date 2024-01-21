@@ -17,6 +17,7 @@ import {
 	Stack,
 	TextField,
 	Tooltip,
+	Typography,
 } from "@mui/material";
 import { SignInRequired, useRequiredSignIn } from "./UseSignIn";
 import LunchDiningIcon from "@mui/icons-material/LunchDining";
@@ -269,12 +270,28 @@ const MissingNutrients = (props: {
 								<ListItem
 									key={row.id}
 									secondaryAction={
-										<ListItemButton key={row.id}>
-											<AdsClick />
-										</ListItemButton>
+										<Tooltip title={"Information on " + row.id}>
+											<ListItemButton key={row.id}
+												onClick={() => {
+													navigate(`/nutrient?nutrient=${row.id}`);
+												}}>
+												<AdsClick />
+											</ListItemButton>
+										</Tooltip>
 									}>
-									<ListItemText key={row.id}>
-										{row.id} {row.value} {row.unit} -- {row.percentDaily}%
+									<ListItemText key={row.id} secondary={
+										<React.Fragment>
+											<Typography
+												sx={{ display: 'inline' }}
+												component="span"
+												variant="body2"
+												color="text.primary"
+											>
+												
+											</Typography>
+										</React.Fragment>
+									}>
+										{row.id} {row.value} {row.unit} -- {row.percentDaily}% Daily
 									</ListItemText>
 								</ListItem>
 							</>);

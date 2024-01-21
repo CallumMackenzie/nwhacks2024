@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import symptomsJson from "./data/symptoms2.json";
 
 export type NutrientProfile = Map<Nutrient, UnitValue>;
 export type FoodNutrientMap = Map<string, FoodInfo>;
@@ -234,4 +235,32 @@ export const sortByDailyValue = (total: NutrientProfile): Array<[Nutrient, UnitV
 	});
 	const ret = low.sort((a, b) => (a[1].percentDaily ?? 1.1) - (b[1].percentDaily ?? 1.1));
 	return ret;
+};
+
+export interface DeficiencyData {
+	name: string,
+	rarity: string,
+	func: string,
+	sources: string,
+	symptoms: string,
+}
+
+export const getSymptomData = (name: string): DeficiencyData | undefined => {
+	let index = -1;
+	for (let i = 0; i < symptomsJson.Name.length; i++) {
+		if ((symptomsJson.Name[i] as string).toLowerCase().trim()
+			== name.toLowerCase().trim().replaceAll(/\s+/gm, " ")) {
+			index = i;
+			break;
+		}
+	}
+	if (index == -1)
+		return undefined;
+	return {
+		name: symptomsJson.Name[index],
+		rarity: symptomsJson.Rarity[index],
+		func: symptomsJson.Function[index],
+		sources: symptomsJson.Sources[index],
+		symptoms: symptomsJson.Symptoms[index]
+	};
 };
