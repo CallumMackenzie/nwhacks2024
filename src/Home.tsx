@@ -3,6 +3,7 @@ import { Auth, User } from "firebase/auth";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { Firestore } from "firebase/firestore";
 import { Unstable_Popup as BasePopup } from '@mui/base/Unstable_Popup';
+import logo from "./images/VitAlert-Logo.png";
 import {
 	Box,
 	Button,
@@ -23,11 +24,9 @@ import {
 import { SignInRequired, useRequiredSignIn } from "./UseSignIn";
 import LunchDiningIcon from "@mui/icons-material/LunchDining";
 import Avatar from "@mui/material/Avatar";
-import { FoodNutrientMap, Nutrient, NutrientProfile, combineFoodNutrientMaps, getNutrientCommonName, getNutrientValues, getSymptomData, removeNutrient, sortByDailyValue, sumNutrients } from "./FoodParsing";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { AdsClick, BakeryDining, Cake, Delete, DeleteTwoTone, Egg, Fastfood, Icecream, Info, LocalPizza, LunchDining, MenuBook, RamenDining } from "@mui/icons-material";
+import { FoodNutrientMap, NutrientProfile, combineFoodNutrientMaps, getNutrientCommonName, getNutrientValues, getSymptomData, removeNutrient, sortByDailyValue, sumNutrients } from "./FoodParsing";
+import { AdsClick, BakeryDining, Cake, Delete, DeleteTwoTone, Egg, Fastfood, Icecream, Info, LocalPizza, RamenDining } from "@mui/icons-material";
 import { fetchOrCreate, save } from "./FirebaseUtils";
-import { useDataGridProps } from "@mui/x-data-grid/DataGrid/useDataGridProps";
 import { theme } from "./App";
 
 type FoodResponseType = {
@@ -55,6 +54,7 @@ const HomeSignedIn = (props: {
 	const navigate = useNavigate();
 	const [foodInput, setFoodInput] = useState("");
 	const [foods, setFoods] = useState<null | FoodResponseType>(null);
+	const aboveMd = useMediaQuery(theme.breakpoints.up('md'));
 
 	useEffect(() => {
 		(async () => {
@@ -86,23 +86,27 @@ const HomeSignedIn = (props: {
 					<Stack
 						direction="row"
 						spacing={5}
-						justifyContent="space-around"
-					>
-						<Box
-							display={"flex"}
-							justifyContent={"center"}
-							alignItems={"center"}
-						>
-							<Typography sx={{
-								fontSize: '0.6em'
-							}}>
-								Welcome, {props.user.displayName}!
-							</Typography>
-						</Box>
-						<h1>
-							<span style={{ color: "#007c00" }}>Vit</span>
-							<span style={{ color: "#F9145b" }}>Alert</span>
-						</h1>
+						justifyContent="space-around">
+						{aboveMd &&
+							<Box
+								display={"flex"}
+								justifyContent={"center"}
+								alignItems={"center"}>
+								<Typography sx={{
+									fontSize: '0.6em'
+								}}>
+									Welcome, {props.user.displayName}!
+								</Typography>
+							</Box>}
+						<Stack direction={'row'} alignItems={'center'} justifyContent={'center'}>
+							<Avatar alt="Vitalert Logo" src={logo} sx={{
+								width: 65, height: 65
+							}} />
+							<h1>
+								<span style={{ color: "#007c00" }}>Vit</span>
+								<span style={{ color: "#F9145b" }}>Alert</span>
+							</h1>
+						</Stack>
 						<Box
 							display={"flex"}
 							justifyContent={"center"}
