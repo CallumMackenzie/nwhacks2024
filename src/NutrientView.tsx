@@ -41,24 +41,29 @@ export const NutrientView = (props: {
 	const func = symptomsJson.Function[index];
 	const symp = symptomsJson.Symptoms[index];
 	const source = symptomsJson.Sources[index];
-	return (<>
-	<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', paddingTop: '50px' }}>
-		<Card variant="outlined" style={{ margin: 'auto', maxWidth: 400 }}>
-      	<CardContent>
-        	<Typography variant="h2" component="div" align="center" gutterBottom>
-          		{nutrient}
-        	</Typography>
-        	<Typography color="textSecondary" align="center" gutterBottom>
-          		<strong>Rarity:</strong> {rarity}
-        	</Typography>
-        	<Typography color="textSecondary" align="center" gutterBottom>
-          		<strong>Symptoms:</strong> {symp}
-        	</Typography>
-        	<Typography color="textSecondary" align="center">
-          		<strong>Food Resource:</strong> {source}
-        	</Typography>
-      	</CardContent>
-    	</Card>
-	</div>
-	</>);
+	return (
+    <>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', paddingTop: '50px' }}>
+        <Card variant="outlined" style={{ margin: 'auto', maxWidth: 400 }}>
+          <CardContent>
+            <Typography variant="h2" component="div" align="center" gutterBottom style={{ fontSize: '3.0rem' }}>
+              {nutrient}
+            </Typography>
+            <Typography color="textSecondary" align="center" gutterBottom style={{ fontSize: '2.0rem' }}>
+              <strong>Rarity:</strong> {rarity}
+            </Typography>
+            <Typography color="textSecondary" align="center" gutterBottom style={{ fontSize: '2.0rem' }}>
+              <strong>Symptoms:</strong> {symp}
+            </Typography>
+            <Typography color="textSecondary" align="center" style={{ fontSize: '2.0rem' }}>
+              <strong>Food Resource:</strong> {source}
+            </Typography>
+          </CardContent>
+        </Card>
+      </div>
+    </>
+  );
+  
 };
+
+
