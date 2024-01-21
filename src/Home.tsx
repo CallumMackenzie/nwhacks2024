@@ -253,7 +253,7 @@ const MissingNutrients = (props: {
 									</ListItemButton>
 								}>
 									<ListItemText>
-										{row.id} {row.percentDaily}%
+										{row.id} {row.value} {row.unit} -- {row.percentDaily}% 
 									</ListItemText>
 								</ListItem>
 							</>);

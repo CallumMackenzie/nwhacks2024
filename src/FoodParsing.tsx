@@ -106,8 +106,16 @@ export const getNutrientValues = async (input: string): Promise<FoodNutrientMap>
 		const response = await fetch(`https://api.edamam.com/api/nutrition-data?app_id=${edamamConfig.api_id}&app_key=${edamamConfig.api_key}&nutrition-type=cooking&ingr=${n}`, {
 			method: "GET"
 		});
+		if (!response.ok) {
+			console.error("Not found: " + n);
+			continue;
+		}
 		const foodNutrients: NutrientProfile = new Map();
 		const json = await response.json();
+		if (Object.entries(json["totalNutrients"]).length === 0) {
+			console.error("Malformed request for: " + n);
+			continue;
+		}
 		Object.entries(Nutrient)
 			.forEach(v => {
 				const nutrientUnitValue = json["totalNutrients"][v[1]] as UnitValue | undefined;
@@ -116,9 +124,33 @@ export const getNutrientValues = async (input: string): Promise<FoodNutrientMap>
 					const quantity = nutrientUnitValue.quantity;
 					if (totalDaily === undefined) {
 						nutrientUnitValue.percentDaily = {
-							[Nutrient.MonosaturatedFat]: quantity / 36,
-							[Nutrient.PolyunsaturatedFat]: quantity / 15,
-							[Nutrient.Cholesterol]: quantity / 150,
+							[Nutrient.MonosaturatedFat]: quantity / 30 * 100,
+							[Nutrient.PolyunsaturatedFat]: quantity / 11 * 100,
+							[Nutrient.Cholesterol]: quantity / 150 * 100,
+							[Nutrient.Carbohydrate]: quantity / 210 * 100,
+							[Nutrient.VitaminD]: quantity / 15 * 100,
+							[Nutrient.Sodium]: quantity / 2300 * 100,
+							[Nutrient.Protein]: quantity / 55 * 100,
+							[Nutrient.Calcium]: quantity / 1200 * 100,
+							[Nutrient.Magnesium]: quantity / 410 * 100,
+							[Nutrient.Potassium]: quantity / 2800 * 100,
+							[Nutrient.Thiamin]: quantity / 1.15 * 100,
+							[Nutrient.Riboflavin]: quantity / 1.2 * 100,
+							[Nutrient.NetCarbohydrate]: undefined,
+							[Nutrient.Fat]: quantity / 40 * 100,
+							[Nutrient.Calories]: quantity / 2200 * 100,
+							[Nutrient.SaturatedFat]: quantity / 15 * 100,
+							[Nutrient.Iron]: quantity / 11 * 100,
+							[Nutrient.Fiber]: quantity / 25 * 100,
+							[Nutrient.Niacin]: quantity / 15 * 100,
+							[Nutrient.VitaminE]: quantity / 15 * 100,
+							[Nutrient.VitaminB12]: quantity / 2.4 * 100,
+							[Nutrient.VitaminB6]: quantity / 1.6 * 100,
+							[Nutrient.VitaminC]: quantity / 82 * 100,
+							[Nutrient.Zinc]: quantity / 10 * 100,
+							[Nutrient.VitaminK]: quantity / 70 * 100,
+							[Nutrient.Phosphorus]: quantity / 1200 * 100,
+							[Nutrient.Sugar]: quantity / 30 * 100
 						}[v[1] as string];
 					}
 					else
@@ -158,8 +190,8 @@ export const sumNutrients = (input: Array<NutrientProfile>): NutrientProfile => 
 				unit: prevValue.unit,
 				quantity: prevValue.quantity + value.quantity,
 				label: prevValue.label,
-				percentDaily: prevValue.percentDaily === undefined && value.percentDaily === undefined ?
-					undefined : (prevValue.percentDaily ?? 0 + (value.percentDaily ?? 0))
+				percentDaily: (prevValue.percentDaily === undefined && value.percentDaily === undefined) ?
+					undefined : ((prevValue.percentDaily ?? 0) + (value.percentDaily ?? 0))
 			});
 		});
 	});
