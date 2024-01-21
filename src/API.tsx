@@ -193,5 +193,3 @@ export function getNutrient(input: string){
 function seperateFood(input: string){
     return input.split(",");
 }
-
-
