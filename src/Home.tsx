@@ -190,7 +190,7 @@ const YourFoods = (props: {
 			<Paper>
 				<Grid container p={3} alignItems={'flex-start'}>
 					<Grid item xs={12}>
-						<h2>Your Foods ...</h2>
+						<h2>Your Foods . . .</h2>
 					</Grid>
 					<Grid item xs={12} paddingBottom={2} >
 						<Divider />
@@ -264,7 +264,7 @@ const MissingNutrients = (props: {
 		<Paper>
 			<Grid container p={3}>
 				<Grid item xs={12}>
-					<h2>You may be deficient in ...</h2>
+					<h2>You may be deficient in . . .</h2>
 				</Grid>
 				<Grid item xs={12} paddingBottom={2}>
 					<Divider />
