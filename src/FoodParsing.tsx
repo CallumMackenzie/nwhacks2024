@@ -166,6 +166,15 @@ export const sumNutrients = (input: Array<NutrientProfile>): NutrientProfile => 
 	return sum;
 }
 
+export const removeNutrient = (a: FoodNutrientMap, toRemove: string): FoodNutrientMap => {
+	const ret = new Map();
+	a.forEach((value, key) => {
+		if (key != toRemove)
+			ret.set(key, value);
+	});
+	return ret;
+};
+
 export const combineFoodNutrientMaps = (a: FoodNutrientMap, b: FoodNutrientMap): FoodNutrientMap => {
 	const ret: FoodNutrientMap = new Map();
 	a.forEach((value, key) => {

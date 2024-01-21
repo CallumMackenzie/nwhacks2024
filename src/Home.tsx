@@ -8,8 +8,10 @@ import {
 	Button,
 	Divider,
 	Grid,
+	IconButton,
 	List,
 	ListItem,
+	ListItemButton,
 	ListItemText,
 	Paper,
 	Stack,
@@ -19,8 +21,9 @@ import {
 import { SignInRequired, useRequiredSignIn } from "./UseSignIn";
 import LunchDiningIcon from "@mui/icons-material/LunchDining";
 import Avatar from "@mui/material/Avatar";
-import { FoodNutrientMap, Nutrient, NutrientProfile, combineFoodNutrientMaps, getNutrientCommonName, getNutrientValues, sortByDailyValue, sumNutrients } from "./FoodParsing";
+import { FoodNutrientMap, Nutrient, NutrientProfile, combineFoodNutrientMaps, getNutrientCommonName, getNutrientValues, removeNutrient, sortByDailyValue, sumNutrients } from "./FoodParsing";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { AdsClick, Delete, DeleteTwoTone } from "@mui/icons-material";
 
 type FoodResponseType = {
 	total: NutrientProfile,
@@ -161,15 +164,35 @@ const YourFoods = (props: {
 					<Grid item xs={12}>
 						<h2>Your Foods ...</h2>
 					</Grid>
-					<Grid item xs={12}>
+					<Grid item xs={12} paddingBottom={2} >
 						<Divider />
 					</Grid>
 					<Grid item xs={12}>
-						<List>
+						<List sx={{
+							overflowY: 'scroll',
+							height: '45vh'
+						}}>
 							{rows.map(row => {
 								return (<>
-									<ListItem>
-
+									<ListItem secondaryAction={
+										<IconButton edge="end" aria-label="delete"
+											onClick={() => {
+												if (props.foods === null)
+													return;
+												const newNutrientList = removeNutrient(props.foods?.foods, row.id);
+												const newTotal = sumNutrients(Array.from(newNutrientList.values()).map(x => x.nutrients));
+												props.setFoods({
+													total: newTotal, foods: newNutrientList
+												});
+											}}>
+											<Delete sx={{
+												color: 'white'
+											}} />
+										</IconButton>
+									}>
+										<ListItemText>
+											{row.id} {row.quantity}
+										</ListItemText>
 									</ListItem>
 								</>);
 							})}
@@ -192,12 +215,6 @@ const MissingNutrients = (props: {
 		value: number,
 		unit: string
 	}
-	const gridColDef: GridColDef[] = [
-		{ field: 'id', headerName: "Name", width: 150 },
-		{ field: 'percentDaily', headerName: "% Daily Value", width: 120 },
-		{ field: 'value', headerName: "Value", width: 120 },
-		{ field: 'unit', headerName: "Unit", width: 70 }
-	];
 
 	const [rows, setRows] = useState<Array<Row>>([]);
 
@@ -209,7 +226,7 @@ const MissingNutrients = (props: {
 			percentDaily: Number(x[1].percentDaily?.toPrecision(3)),
 			value: Number(x[1].quantity.toPrecision(3)),
 			unit: x[1].unit
-		}));
+		})).filter(x => !isNaN(x.value) && !isNaN(x.percentDaily));
 		setRows(belowVal);
 	}, [props.foods]);
 
@@ -222,15 +239,26 @@ const MissingNutrients = (props: {
 				<Grid item xs={12} paddingBottom={2}>
 					<Divider />
 				</Grid>
-				<Grid item xs={12}>
-					<DataGrid columns={gridColDef}
-						onRowClick={e => {
-							navigate("/nutrient?\"" + (e.row as Row).id + "\"");
-						}}
-						rows={rows}
-						sx={{
-							height: '40vh'
-						}} />
+				<Grid
+					item xs={12}>
+					<List sx={{
+						overflowY: 'scroll',
+						height: '45vh'
+					}}>
+						{rows.map(row => {
+							return (<>
+								<ListItem secondaryAction={
+									<ListItemButton>
+										<AdsClick />
+									</ListItemButton>
+								}>
+									<ListItemText>
+										{row.id} {row.percentDaily}%
+									</ListItemText>
+								</ListItem>
+							</>);
+						})}
+					</List>
 				</Grid>
 			</Grid>
 		</Paper>

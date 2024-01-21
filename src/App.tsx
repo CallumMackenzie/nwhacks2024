@@ -35,8 +35,8 @@ export const theme = createTheme({
 			main: "#C00F0F",
 		},
 		background: {
-			default: "#ffffff",
-			paper: "#aaaaaa"
+			default: "#2e2d2d",
+			paper: "#262424"
 		},
 		text: {
 			primary: "#C3CbCb",
@@ -57,7 +57,7 @@ export const theme = createTheme({
 const App = () => {
 	return (
 		<div className="App">
-			{/* <ThemeProvider theme={theme}> */}
+			<ThemeProvider theme={theme}>
 				<CssBaseline enableColorScheme />
 				<BrowserRouter>
 					<Routes>
@@ -69,7 +69,7 @@ const App = () => {
 						</Route>
 					</Routes>
 				</BrowserRouter >
-			{/* </ThemeProvider> */}
+			</ThemeProvider>
 		</div>
 	);
 };
