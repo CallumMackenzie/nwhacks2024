@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Auth, User } from "firebase/auth";
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { Firestore } from 'firebase/firestore';
-import { Backdrop, Box, Button, Grid, Paper, Stack, TextField } from '@mui/material';
+import { Backdrop, Box, Button, Divider, Grid, List, ListItem, Paper, Stack, TextField } from '@mui/material';
 import { SignInRequired, useRequiredSignIn } from './UseSignIn';
 
 export const Home = (props: {
@@ -24,6 +24,7 @@ const HomeSignedIn = (props: {
 	firestore: Firestore,
 }) => {
 	const navigate = useNavigate();
+	const [foodInput, setFoodInput] = useState("");
 
 	return (<>
 		<Grid container spacing={2} px={8} justifyContent={'center'} alignItems={'center'}>
@@ -39,16 +40,23 @@ const HomeSignedIn = (props: {
 					</Box>
 				</Stack>
 			</Grid>
-			<Grid item xs={8}>
-				<TextField variant='filled'
-					label="Type food and amount"
-					sx={{
-						width: "100%"
-					}}>
-				</TextField>
-			</Grid>
-			<Grid item textAlign={'center'}>
-				<Button variant='contained'>Submit</Button>
+			<Grid item xs={12}>
+				<Stack direction='row' spacing={2} alignItems={'center'} justifyContent={'center'}>
+					<TextField variant='standard'
+						onChange={e => setFoodInput(e.currentTarget.value)}
+						helperText="Ex. 1 apple, 1 slice pizza, 1 cup rice"
+						label="Type food and amount"
+						sx={{
+							width: "75%"
+						}}>
+					</TextField>
+					<Button
+						disabled={foodInput == ""}
+						variant='contained'
+						onClick={() => parseFoodInput(props.firestore, props.user, foodInput)}>
+						Submit
+					</Button>
+				</Stack>
 			</Grid>
 			<Grid item xs={12}>
 				<YourFoods />
@@ -61,11 +69,20 @@ const HomeSignedIn = (props: {
 }
 
 const YourFoods = () => {
+
 	return (<>
 		<Paper>
 			<Grid container p={3}>
-				<Grid item>
+				<Grid item xs={12}>
 					<h2>Your Foods ...</h2>
+				</Grid>
+				<Grid item xs={12}>
+					<Divider />
+				</Grid>
+				<Grid item xs={12}>
+					<List>
+						{/* TODO */}
+					</List>
 				</Grid>
 			</Grid>
 		</Paper>
@@ -73,11 +90,20 @@ const YourFoods = () => {
 };
 
 const MissingNutrients = () => {
+
 	return (<>
 		<Paper>
 			<Grid container p={3}>
-				<Grid item>
+				<Grid item xs={12}>
 					<h2>You may be deficient in ...</h2>
+				</Grid>
+				<Grid item xs={12}>
+					<Divider />
+				</Grid>
+				<Grid item xs={12}>
+					<List>
+						{/* TODO */}
+					</List>
 				</Grid>
 			</Grid>
 		</Paper>
@@ -87,4 +113,8 @@ const MissingNutrients = () => {
 const signOut = (auth: Auth, navigate: NavigateFunction) => {
 	auth.signOut();
 	navigate("/");
+};
+
+const parseFoodInput = (firestore: Firestore, user: User, input: string) => {
+
 };

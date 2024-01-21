@@ -29,9 +29,11 @@ export const theme = createTheme({
 	palette: {
 		primary: {
 			main: "#1EB36C",
+			contrastText: "#C3CbCb",
 		},
 		secondary: {
 			main: "#C00F0F",
+			contrastText: "#C3CbCb"
 		},
 		background: {
 			default: "#0e1111",
@@ -41,7 +43,8 @@ export const theme = createTheme({
 			primary: "#C3CbCb",
 			secondary: "#F5F5F5",
 			disabled: "#FCC8D1"
-		}
+		},
+		divider: "#C3CbCb",
 	},
 });
 
